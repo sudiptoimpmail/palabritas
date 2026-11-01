@@ -4,7 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-title" content="Palabritas">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#EEF5F1">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="favicon.png">
 <style>*,*::before,*::after{box-sizing:border-box}:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style>
 <title>Palabritas</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -100,6 +103,43 @@ button:focus-visible{outline:3px solid var(--rosa);outline-offset:3px}
 .mode em{font-style:normal;font-family:var(--display);font-weight:600;font-size:1rem}
 .mode[aria-pressed="true"]{background:var(--bg);color:var(--ink)}
 .mode[aria-pressed="true"] em{color:var(--rosa)}
+/* iPad and wide screens */
+@media (min-width:700px){
+  .app{max-width:900px;gap:18px;padding-block:12px 130px}
+  h1{font-size:2.7rem} .sub{font-size:1.05rem}
+  .stars{font-size:1.4rem;padding:8px 18px}
+  .cats{flex-wrap:wrap;overflow:visible}
+  .chip{font-size:1.1rem;padding:10px 16px;border-radius:16px}
+  .vbox{font-size:1.05rem}
+  .card{padding:34px 36px;border-radius:38px;gap:18px}
+  .learn{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);column-gap:36px;row-gap:14px;justify-items:start;text-align:left;align-items:center}
+  .learn .pic{grid-column:1;grid-row:1 / span 6;justify-self:center;font-size:13rem}
+  .learn > :not(.pic):not(.nav){grid-column:2}
+  .learn .row{justify-content:flex-start}
+  .learn .repeat{align-items:flex-start}
+  .learn .nav{grid-column:1 / -1}
+  .pic{font-size:9rem}
+  .word{font-size:4.2rem} .say{font-size:1.7rem} .en{font-size:1rem}
+  .btn{font-size:1.2rem;min-height:60px;padding:15px 24px;border-radius:20px}
+  .big{flex:0 1 auto}
+  .prompt{font-size:1.7rem}
+  .choices{grid-template-columns:repeat(4,1fr);gap:16px}
+  .choice{font-size:5.5rem;padding:20px 0;border-radius:28px}
+  .slot{width:58px;height:72px;font-size:2.9rem;line-height:72px}
+  .tiles{gap:12px}
+  .tile{width:70px;height:76px;font-size:2.3rem;border-radius:18px}
+  .dot{width:58px;height:58px;font-size:1.6rem}
+  .msg{font-size:1.6rem}
+  .modes div{max-width:560px}
+  .mode{flex-direction:row;justify-content:center;gap:10px;font-size:.95rem;padding:10px}
+  .mode span{font-size:1.8rem}
+  .mode em{font-size:1.15rem}
+}
+/* phone held sideways: keep it on one screen */
+@media (min-width:700px) and (max-height:520px){
+  .learn .pic{font-size:7rem} .pic{font-size:5rem} .word{font-size:2.8rem} .choice{font-size:3.5rem;padding:8px 0}
+}
+@media (hover:hover){.chip:hover,.choice:hover,.tile:hover:not(:disabled){filter:brightness(1.04);transform:translateY(-1px)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 
@@ -183,7 +223,7 @@ function sayHTML(p){return esc(p).split(/([- ])/).map(s=>/^[A-Z]+$/.test(s)?`<b>
 
 function renderLearn(){
   const ws=words(),w=ws[S.i];
-  $("view").innerHTML=`<section class="card">
+  $("view").innerHTML=`<section class="card learn">
     <button class="pic" data-act="hear" aria-label="Hear ${esc(w[0])}">${w[3]}</button>
     <div class="word">${w[1]?`<span class="art">${w[1]}</span> `:""}${esc(w[0])}</div>
     <div class="say" aria-label="Pronunciation">${sayHTML(w[4])}</div>

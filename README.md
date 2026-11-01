@@ -1,6 +1,6 @@
 # Palabritas 🇪🇸
 
-A kid-friendly Spanish vocabulary app for parents and children to learn together. It's a single HTML file with no build step and no dependencies, and it works great on iPhone.
+A kid-friendly Spanish vocabulary app for parents and children to learn together. It's a single HTML file with no build step and no dependencies, and it works great on iPhone and iPad, with a larger side-by-side layout on tablets.
 
 ## Features
 

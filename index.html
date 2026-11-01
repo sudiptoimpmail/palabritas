@@ -203,13 +203,37 @@ function pickVoice(){
   if(all.length) $("voiceNote").hidden=!!voice;
 }
 if("speechSynthesis" in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;setTimeout(pickVoice,800)}else pickVoice();
-function speak(t,rate=.85){
-  if(!("speechSynthesis" in window))return;
-  speechSynthesis.cancel();
-  const u=new SpeechSynthesisUtterance(t);
-  u.lang=voice?voice.lang:"es-MX"; if(voice)u.voice=voice; u.rate=rate; u.pitch=1.05;
-  speechSynthesis.speak(u);
+// Safari on iPhone/iPad can stall: utterances get garbage-collected, a speak() right after cancel() is dropped,
+// or the engine stays "paused". Keep a reference, give cancel a moment, and retry if speech never starts.
+let curU=null,speakTimer=null,watchTimer=null;
+function freshVoice(){
+  if(!voice)return null;
+  return speechSynthesis.getVoices().find(v=>v.voiceURI===voice.voiceURI)||voice;
 }
+function speak(t,rate=.85,retry=0){
+  if(!("speechSynthesis" in window))return;
+  const ss=speechSynthesis;
+  clearTimeout(speakTimer);clearTimeout(watchTimer);
+  const busy=ss.speaking||ss.pending;
+  if(busy)ss.cancel();
+  if(ss.paused)ss.resume();
+  const go=()=>{
+    const u=new SpeechSynthesisUtterance(t);
+    const v=retry<2?freshVoice():null;           // last retry: let Safari choose the Spanish voice itself
+    u.lang=v?v.lang:(voice?voice.lang:"es-MX"); if(v)u.voice=v;
+    u.rate=rate;u.pitch=1.05;
+    let started=false;
+    u.onstart=()=>{started=true};
+    u.onend=u.onerror=()=>{if(curU===u)curU=null};
+    curU=u;
+    ss.speak(u);
+    watchTimer=setTimeout(()=>{
+      if(!started&&curU===u&&retry<2){ss.cancel();speak(t,rate,retry+1)}
+    },retry?1200:900);
+  };
+  if(busy||retry)speakTimer=setTimeout(go,busy?150:250); else go();
+}
+document.addEventListener("visibilitychange",()=>{if(!document.hidden&&"speechSynthesis" in window){speechSynthesis.cancel();curU=null}});
 function star(n=1){S.stars+=n;store.set("pal_stars",S.stars);$("starN").textContent=S.stars;const s=$("stars");s.classList.remove("bump");void s.offsetWidth;s.classList.add("bump")}
 const praise=["¡Muy bien!","¡Excelente!","¡Fantástico!","¡Genial!","¡Bravo!"];
 

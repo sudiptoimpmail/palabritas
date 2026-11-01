@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-title" content="Palabritas">
+<meta name="theme-color" content="#EEF5F1">
+<style>*,*::before,*::after{box-sizing:border-box}:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style>
+<title>Palabritas</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;700;800&display=swap">
+<style>
+/* Layout: one-column phone app — sticky header, category strip, one big card per screen, mode bar fixed at the bottom */
+:root{
+  --bg:#EEF5F1; --paper:#FFFFFF; --ink:#173A40; --soft:#5E7B7E; --line:#D3E3DC;
+  --marigold:#F4A51C; --rosa:#E8507A; --teal:#1C8C83; --good:#2E9E5B; --bad:#D9453B;
+  --tile:#FFF3D6; --tile-ink:#5A3A00;
+  --display:"Fredoka","Baloo 2","Arial Rounded MT Bold",system-ui,sans-serif;
+  --body:"Nunito",system-ui,-apple-system,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0F2225; --paper:#17323A; --ink:#EAF6F2; --soft:#9DB9B8; --line:#25474E;
+  --marigold:#FFB938; --rosa:#FF6E95; --teal:#3CC0B4; --good:#4CC67D; --bad:#FF6B5F;
+  --tile:#3A2F14; --tile-ink:#FFE2A3; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F2225; --paper:#17323A; --ink:#EAF6F2; --soft:#9DB9B8; --line:#25474E;
+  --marigold:#FFB938; --rosa:#FF6E95; --teal:#3CC0B4; --good:#4CC67D; --bad:#FF6B5F;
+  --tile:#3A2F14; --tile-ink:#FFE2A3; color-scheme:dark}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;-webkit-tap-highlight-color:transparent;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.app{max-width:520px;margin:0 auto;padding-block:8px 110px;display:flex;flex-direction:column;gap:14px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;align-items:center;justify-content:space-between;padding-block:10px 4px}
+h1{font-family:var(--display);font-weight:700;font-size:1.9rem;margin:0;letter-spacing:.5px;line-height:1}
+h1 span{color:var(--rosa)}
+.sub{color:var(--soft);font-size:.85rem;font-weight:700;margin-top:2px}
+.stars{font-family:var(--display);font-weight:600;font-size:1.15rem;background:var(--paper);border:2px solid var(--line);border-radius:999px;padding:6px 14px;display:flex;gap:6px;align-items:center;font-variant-numeric:tabular-nums}
+.stars.bump{animation:bump .5s}
+@keyframes bump{40%{transform:scale(1.25)}}
+.cats{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;margin-inline:-4px;padding-inline:4px}
+.cats::-webkit-scrollbar{display:none}
+.chip{flex:none;border:2px solid var(--line);background:var(--paper);color:var(--ink);border-radius:14px;padding:8px 12px;font:700 .95rem var(--body);display:flex;gap:6px;align-items:center;cursor:pointer}
+.chip small{color:var(--soft);font-weight:700}
+.chip[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#fff}
+.chip[aria-pressed="true"] small{color:#E0FFFB}
+.card{background:var(--paper);border:2px solid var(--line);border-radius:28px;padding:22px 18px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;box-shadow:0 6px 0 var(--line)}
+.pic{font-size:7.5rem;line-height:1.1;border:0;background:none;cursor:pointer;padding:0;user-select:none}
+.pic:active{transform:scale(.94)}
+.word{font-family:var(--display);font-weight:700;font-size:2.6rem;line-height:1.05;text-wrap:balance}
+.art{color:var(--rosa)}
+.say{font-family:var(--display);font-weight:500;font-size:1.25rem;color:var(--teal);letter-spacing:.5px}
+.say b{color:var(--marigold);font-weight:700}
+.en{color:var(--soft);font-weight:800;text-transform:uppercase;letter-spacing:1.5px;font-size:.85rem}
+.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:100%}
+.btn{border:0;border-radius:18px;padding:13px 18px;font:700 1.05rem var(--body);cursor:pointer;display:inline-flex;gap:8px;align-items:center;justify-content:center;min-height:52px}
+.btn:active{transform:translateY(2px)}
+.hear{background:var(--marigold);color:#3B2500;box-shadow:0 4px 0 #B87500}
+.slow{background:var(--tile);color:var(--tile-ink)}
+.ghost{background:transparent;border:2px solid var(--line);color:var(--ink)}
+.big{font-size:1.25rem;padding:18px 26px;flex:1}
+button:focus-visible{outline:3px solid var(--rosa);outline-offset:3px}
+.repeat{display:flex;flex-direction:column;gap:8px;align-items:center;border-top:2px dashed var(--line);padding-top:14px;width:100%}
+.repeat p{margin:0;font-weight:800}
+.dots{display:flex;gap:12px}
+.dot{width:46px;height:46px;border-radius:50%;border:3px solid var(--line);background:transparent;font-size:1.4rem;cursor:pointer;color:var(--ink)}
+.dot.on{background:var(--rosa);border-color:var(--rosa);color:#fff}
+.nav{display:flex;gap:10px;align-items:center;justify-content:space-between;width:100%}
+.count{font-weight:800;color:var(--soft);font-variant-numeric:tabular-nums}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%}
+.choice{background:var(--bg);border:3px solid var(--line);border-radius:22px;font-size:4rem;padding:12px 0;cursor:pointer;line-height:1.2}
+.choice.right{border-color:var(--good);background:color-mix(in srgb,var(--good) 18%,var(--paper))}
+.choice.wrong{border-color:var(--bad);animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.prompt{font-family:var(--display);font-weight:600;font-size:1.3rem;margin:0}
+.slots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.slot{width:40px;height:50px;border-bottom:4px solid var(--line);font:700 2rem/50px var(--display);color:var(--ink)}
+.slot.fill{border-color:var(--teal)}
+.slots.ok .slot{color:var(--good);border-color:var(--good)}
+.slots.no{animation:shake .4s}
+.tiles{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.tile{width:52px;height:56px;border-radius:14px;border:0;background:var(--tile);color:var(--tile-ink);font:700 1.7rem var(--display);cursor:pointer;box-shadow:0 4px 0 color-mix(in srgb,var(--marigold) 60%,transparent)}
+.tile:disabled{opacity:.25;box-shadow:none}
+.msg{min-height:1.5em;font-family:var(--display);font-weight:600;font-size:1.3rem}
+.msg.good{color:var(--good)} .msg.bad{color:var(--bad)}
+.note{background:var(--tile);color:var(--tile-ink);border-radius:14px;padding:10px 14px;font-weight:700;font-size:.9rem}
+.vbox{background:var(--paper);border:2px solid var(--line);border-radius:16px;padding:10px 14px}
+.vbox summary{font-weight:800;cursor:pointer}
+.vbox summary span{color:var(--teal)}
+.vrow{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
+.vrow label{width:100%;font-weight:700;color:var(--soft);font-size:.85rem}
+.vrow select{flex:1;min-width:0;font:700 1rem var(--body);padding:10px;border-radius:12px;border:2px solid var(--line);background:var(--bg);color:var(--ink)}
+.vtip{margin:10px 0 0;font-size:.9rem;line-height:1.45;color:var(--soft)}
+.vtip b{color:var(--ink)}
+.modes{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--paper);border-top:2px solid var(--line);
+  padding:8px max(16px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.modes div{max-width:520px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.mode{border:0;background:transparent;border-radius:16px;padding:8px 4px;font:800 .85rem var(--body);color:var(--soft);display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer}
+.mode span{font-size:1.6rem}
+.mode em{font-style:normal;font-family:var(--display);font-weight:600;font-size:1rem}
+.mode[aria-pressed="true"]{background:var(--bg);color:var(--ink)}
+.mode[aria-pressed="true"] em{color:var(--rosa)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+</head>
+<body>
+<div class="app">
+  <header>
+    <div><h1>Palabr<span>itas</span></h1><div class="sub">Spanish words to learn together</div></div>
+    <div class="stars" id="stars" aria-label="Stars earned">⭐ <span id="starN">0</span></div>
+  </header>
+  <div class="note" id="voiceNote" hidden>This device has no Spanish voice installed. On iPhone: Settings → Accessibility → Spoken Content → Voices → Spanish.</div>
+  <details class="vbox" id="vbox"><summary>🗣️ Voice: <span id="vname">…</span></summary>
+    <div class="vrow"><label for="vsel">Choose a voice</label><select id="vsel"></select><button class="btn slow" data-act="vtest">▶ Test</button></div>
+    <p class="vtip">For the most natural sound, download a better voice on your iPhone: <b>Settings → Accessibility → Spoken Content → Voices → Spanish</b>. Pick <b>Mónica</b> or <b>Paulina</b> and download the <b>Premium</b> or <b>Enhanced</b> version. Then reopen this page. The app uses it automatically.</p>
+  </details>
+  <nav class="cats" id="cats" aria-label="Topics"></nav>
+  <main id="view"></main>
+</div>
+<nav class="modes" aria-label="Modes"><div id="modes"></div></nav>
+
+<script>
+// [word, article, english, picture, pronunciation (CAPS = stressed syllable)]
+const CATS=[
+ {n:"Saludos",en:"Hello",i:"👋",w:[["hola","","hello","😊","OH-lah"],["adiós","","goodbye","👋","ah-DYOHS"],["gracias","","thank you","🙏","GRAH-syahs"],["por favor","","please","🥺","por fah-BOR"],["buenos días","","good morning","🌅","BWEH-nohs DEE-ahs"],["buenas noches","","good night","🌙","BWEH-nahs NOH-chehs"],["sí","","yes","👍","SEE"],["no","","no","👎","NOH"]]},
+ {n:"Animales",en:"Animals",i:"🐶",w:[["perro","el","dog","🐶","PEH-rroh"],["gato","el","cat","🐱","GAH-toh"],["pájaro","el","bird","🐦","PAH-hah-roh"],["pez","el","fish","🐟","PEHS"],["vaca","la","cow","🐮","BAH-kah"],["caballo","el","horse","🐴","kah-BAH-yoh"],["conejo","el","rabbit","🐰","koh-NEH-hoh"],["oso","el","bear","🐻","OH-soh"]]},
+ {n:"Colores",en:"Colors",i:"🎨",w:[["rojo","","red","🔴","ROH-hoh"],["azul","","blue","🔵","ah-SOOL"],["verde","","green","🟢","BEHR-deh"],["amarillo","","yellow","🟡","ah-mah-REE-yoh"],["naranja","","orange","🟠","nah-RAHN-hah"],["morado","","purple","🟣","moh-RAH-doh"],["negro","","black","⚫","NEH-groh"],["blanco","","white","⚪","BLAHN-koh"]]},
+ {n:"Números",en:"Numbers",i:"🔢",w:[["uno","","one","1️⃣","OO-noh"],["dos","","two","2️⃣","DOHS"],["tres","","three","3️⃣","TREHS"],["cuatro","","four","4️⃣","KWAH-troh"],["cinco","","five","5️⃣","SEEN-koh"],["seis","","six","6️⃣","SAYS"],["siete","","seven","7️⃣","SYEH-teh"],["ocho","","eight","8️⃣","OH-choh"],["nueve","","nine","9️⃣","NWEH-beh"],["diez","","ten","🔟","DYEHS"]]},
+ {n:"Comida",en:"Food",i:"🍎",w:[["manzana","la","apple","🍎","mahn-SAH-nah"],["plátano","el","banana","🍌","PLAH-tah-noh"],["agua","el","water","💧","AH-gwah"],["leche","la","milk","🥛","LEH-cheh"],["pan","el","bread","🍞","PAHN"],["queso","el","cheese","🧀","KEH-soh"],["huevo","el","egg","🥚","WEH-boh"],["galleta","la","cookie","🍪","gah-YEH-tah"]]},
+ {n:"Familia",en:"Family",i:"👨‍👩‍👧",w:[["mamá","la","mom","👩","mah-MAH"],["papá","el","dad","👨","pah-PAH"],["hermano","el","brother","👦","ehr-MAH-noh"],["hermana","la","sister","👧","ehr-MAH-nah"],["abuelo","el","grandpa","👴","ah-BWEH-loh"],["abuela","la","grandma","👵","ah-BWEH-lah"],["bebé","el","baby","👶","beh-BEH"],["familia","la","family","👨‍👩‍👧","fah-MEE-lyah"]]},
+ {n:"El cuerpo",en:"Body",i:"✋",w:[["mano","la","hand","✋","MAH-noh"],["pie","el","foot","🦶","PYEH"],["ojo","el","eye","👁️","OH-hoh"],["nariz","la","nose","👃","nah-REES"],["boca","la","mouth","👄","BOH-kah"],["oreja","la","ear","👂","oh-REH-hah"],["diente","el","tooth","🦷","DYEHN-teh"],["pelo","el","hair","💇","PEH-loh"]]},
+ {n:"Mi casa",en:"Around us",i:"🏠",w:[["casa","la","house","🏠","KAH-sah"],["cama","la","bed","🛏️","KAH-mah"],["silla","la","chair","🪑","SEE-yah"],["libro","el","book","📕","LEE-broh"],["puerta","la","door","🚪","PWEHR-tah"],["sol","el","sun","☀️","SOHL"],["luna","la","moon","🌙","LOO-nah"],["árbol","el","tree","🌳","AHR-bohl"]]}
+];
+const MODES=[["learn","📖","Aprender","Learn"],["listen","👂","Escuchar","Listen"],["spell","🔤","Deletrear","Spell"]];
+const S={mode:"learn",cat:0,i:0,reps:0,q:null,spell:null,stars:0};
+const $=id=>document.getElementById(id);
+const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+S.stars=store.get("pal_stars",0);S.cat=Math.min(store.get("pal_cat",0),CATS.length-1);
+const words=()=>CATS[S.cat].w;
+const full=w=>(w[1]?w[1]+" ":"")+w[0];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+// ---- voice ----
+let voice=null;
+function pickVoice(){
+  if(!("speechSynthesis" in window)){$("voiceNote").hidden=false;$("voiceNote").textContent="Sound isn't available in this browser. Try opening the page in Safari.";return}
+  const all=speechSynthesis.getVoices();
+  const score=v=>{let s=0;const n=v.name;
+    if(/premium/i.test(n))s+=100; else if(/enhanced|mejorad|neural|natural/i.test(n))s+=60; else if(/siri/i.test(n))s+=50;
+    if(/compact|eloquence|grandma|grandpa|rocko|shelley|flo|reed|sandy|eddy/i.test(n))s-=40;
+    if(/es[-_](MX|US|419)/i.test(v.lang))s+=10; else if(/es[-_]ES/i.test(v.lang))s+=6;
+    if(/m[oó]nica|paulina|marisol|jorge|juan|diego/i.test(n))s+=8;
+    if(v.localService)s+=2; return s};
+  const vs=all.filter(v=>/^es/i.test(v.lang)).sort((a,b)=>score(b)-score(a));
+  const saved=store.get("pal_voice",null);
+  voice=vs.find(v=>v.voiceURI===saved)||vs[0]||null;
+  const sel=$("vsel");
+  sel.innerHTML=vs.map(v=>`<option value="${esc(v.voiceURI)}" ${v===voice?"selected":""}>${esc(v.name)} (${esc(v.lang)})</option>`).join("")||"<option>No Spanish voices found</option>";
+  sel.onchange=()=>{voice=vs.find(v=>v.voiceURI===sel.value)||voice;store.set("pal_voice",voice&&voice.voiceURI);$("vname").textContent=voice?voice.name:"default";speak("¡Hola! Vamos a aprender español.")};
+  $("vname").textContent=voice?voice.name:"default";
+  if(all.length) $("voiceNote").hidden=!!voice;
+}
+if("speechSynthesis" in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;setTimeout(pickVoice,800)}else pickVoice();
+function speak(t,rate=.85){
+  if(!("speechSynthesis" in window))return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(t);
+  u.lang=voice?voice.lang:"es-MX"; if(voice)u.voice=voice; u.rate=rate; u.pitch=1.05;
+  speechSynthesis.speak(u);
+}
+function star(n=1){S.stars+=n;store.set("pal_stars",S.stars);$("starN").textContent=S.stars;const s=$("stars");s.classList.remove("bump");void s.offsetWidth;s.classList.add("bump")}
+const praise=["¡Muy bien!","¡Excelente!","¡Fantástico!","¡Genial!","¡Bravo!"];
+
+// ---- render ----
+function renderChrome(){
+  $("starN").textContent=S.stars;
+  $("cats").innerHTML=CATS.map((c,k)=>`<button class="chip" data-act="cat" data-k="${k}" aria-pressed="${k===S.cat}">${c.i} ${c.n} <small>${c.en}</small></button>`).join("");
+  $("modes").innerHTML=MODES.map(m=>`<button class="mode" data-act="mode" data-k="${m[0]}" aria-pressed="${S.mode===m[0]}"><span>${m[1]}</span><em>${m[2]}</em>${m[3]}</button>`).join("");
+}
+function sayHTML(p){return esc(p).split(/([- ])/).map(s=>/^[A-Z]+$/.test(s)?`<b>${s}</b>`:s).join("")}
+
+function renderLearn(){
+  const ws=words(),w=ws[S.i];
+  $("view").innerHTML=`<section class="card">
+    <button class="pic" data-act="hear" aria-label="Hear ${esc(w[0])}">${w[3]}</button>
+    <div class="word">${w[1]?`<span class="art">${w[1]}</span> `:""}${esc(w[0])}</div>
+    <div class="say" aria-label="Pronunciation">${sayHTML(w[4])}</div>
+    <div class="en">${esc(w[2])}</div>
+    <div class="row">
+      <button class="btn hear big" data-act="hear">🔊 Escuchar</button>
+      <button class="btn slow" data-act="slow">🐢 Slow</button>
+    </div>
+    <div class="repeat">
+      <p>Now say it out loud together, 3 times!</p>
+      <div class="dots">${[0,1,2].map(d=>`<button class="dot ${d<S.reps?"on":""}" data-act="rep" aria-label="Said it ${d+1}">${d<S.reps?"✓":d+1}</button>`).join("")}</div>
+    </div>
+    <div class="nav">
+      <button class="btn ghost" data-act="prev" aria-label="Previous word">←</button>
+      <span class="count">${S.i+1} / ${ws.length}</span>
+      <button class="btn ghost" data-act="next" aria-label="Next word">→</button>
+    </div>
+  </section>`;
+}
+
+function newQuiz(){
+  const ws=words(),a=ws[Math.floor(Math.random()*ws.length)];
+  const opts=shuffle([a,...shuffle(ws.filter(x=>x!==a)).slice(0,3)]);
+  S.q={a,opts,done:false,tries:0};
+}
+function renderListen(){
+  if(!S.q)newQuiz();
+  const q=S.q;
+  $("view").innerHTML=`<section class="card">
+    <p class="prompt">Listen, then tap the right picture</p>
+    <div class="row"><button class="btn hear big" data-act="qplay">🔊 Play the word</button><button class="btn slow" data-act="qslow">🐢</button></div>
+    <div class="choices">${q.opts.map((o,k)=>`<button class="choice" data-act="pick" data-k="${k}" aria-label="${esc(o[2])}">${o[3]}</button>`).join("")}</div>
+    <div class="msg" id="msg" aria-live="polite"></div>
+    <button class="btn ghost" data-act="qnext" id="qnext" ${q.done?"":"hidden"}>Next word →</button>
+  </section>`;
+}
+
+function newSpell(){
+  const ws=words().filter(w=>!w[0].includes(" "));
+  const w=ws[Math.floor(Math.random()*ws.length)];
+  const letters=[...w[0].normalize("NFC")];
+  let order=shuffle(letters.map((l,k)=>k));
+  if(letters.length>2&&order.every((v,k)=>v===k))order=order.reverse();
+  S.spell={w,letters,order,picked:[],done:false};
+}
+function renderSpell(){
+  if(!S.spell)newSpell();
+  const sp=S.spell,w=sp.w;
+  $("view").innerHTML=`<section class="card">
+    <button class="pic" data-act="sHear" aria-label="Hear the word" style="font-size:5.5rem">${w[3]}</button>
+    <div class="en">${esc(w[2])}</div>
+    <div class="row"><button class="btn hear" data-act="sHear">🔊 Hear it</button><button class="btn slow" data-act="sSlow">🐢</button></div>
+    <div class="slots ${sp.done?"ok":""}" id="slots">${sp.letters.map((l,k)=>`<div class="slot ${k<sp.picked.length?"fill":""}">${k<sp.picked.length?esc(sp.letters[sp.picked[k]]):""}</div>`).join("")}</div>
+    <div class="tiles">${sp.order.map(k=>`<button class="tile" data-act="tile" data-k="${k}" ${sp.picked.includes(k)||sp.done?"disabled":""}>${esc(sp.letters[k])}</button>`).join("")}</div>
+    <div class="msg" id="msg" aria-live="polite"></div>
+    <div class="row">${sp.done?`<button class="btn hear big" data-act="sNext">Next word →</button>`:`<button class="btn ghost" data-act="undo">⌫ Undo</button><button class="btn ghost" data-act="hint">💡 Hint</button>`}</div>
+  </section>`;
+}
+function render(){renderChrome();({learn:renderLearn,listen:renderListen,spell:renderSpell})[S.mode]()}
+
+// ---- actions ----
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-act]");if(!b)return;
+  const act=b.dataset.act,k=b.dataset.k,ws=words();
+  switch(act){
+    case "vtest":speak("¡Hola! El perro, el gato, la manzana.");break;
+    case "cat":S.cat=+k;S.i=0;S.reps=0;S.q=null;S.spell=null;store.set("pal_cat",S.cat);render();break;
+    case "mode":S.mode=k;render();window.scrollTo(0,0);break;
+    case "hear":speak(full(ws[S.i]));break;
+    case "slow":speak(full(ws[S.i]),.5);break;
+    case "rep":speak(full(ws[S.i]));S.reps=Math.min(3,S.reps+1);if(S.reps===3){star();setTimeout(()=>speak(praise[Math.floor(Math.random()*praise.length)]),900)}renderLearn();break;
+    case "prev":S.i=(S.i-1+ws.length)%ws.length;S.reps=0;renderLearn();speak(full(ws[S.i]));break;
+    case "next":S.i=(S.i+1)%ws.length;S.reps=0;renderLearn();speak(full(ws[S.i]));break;
+    case "qplay":speak(S.q.a[0]);break;
+    case "qslow":speak(S.q.a[0],.5);break;
+    case "pick":{
+      const q=S.q;if(q.done)return;const o=q.opts[+k],m=$("msg");
+      if(o===q.a){q.done=true;b.classList.add("right");m.className="msg good";m.textContent=`${praise[Math.floor(Math.random()*praise.length)]} ${full(q.a)} = ${q.a[2]}`;
+        if(q.tries===0)star();speak(full(q.a));$("qnext").hidden=false;
+        document.querySelectorAll(".choice").forEach(c=>c.disabled=true);}
+      else{q.tries++;b.classList.remove("wrong");void b.offsetWidth;b.classList.add("wrong");m.className="msg bad";m.textContent="¡Otra vez! Try again";setTimeout(()=>speak(q.a[0]),500)}
+      break}
+    case "qnext":newQuiz();renderListen();speak(S.q.a[0]);break;
+    case "sHear":speak(full(S.spell.w));break;
+    case "sSlow":speak(S.spell.w[0],.45);break;
+    case "tile":{
+      const sp=S.spell;sp.picked.push(+k);speak(sp.letters[+k],.8);
+      if(sp.picked.length===sp.letters.length){
+        const typed=sp.picked.map(x=>sp.letters[x]).join("");
+        if(typed===sp.letters.join("")){sp.done=true;star(2);renderSpell();const m=$("msg");m.className="msg good";m.textContent=praise[Math.floor(Math.random()*praise.length)];setTimeout(()=>speak(sp.w[0]),400)}
+        else{renderSpell();const s=$("slots");s.classList.add("no");const m=$("msg");m.className="msg bad";m.textContent="Almost! Tap Undo and try again";}
+      }else renderSpell();
+      break}
+    case "undo":S.spell.picked.pop();renderSpell();break;
+    case "hint":{
+      const sp=S.spell;
+      // keep correct prefix, then place the next right letter
+      let n=0;while(n<sp.picked.length&&sp.letters[sp.picked[n]]===sp.letters[n])n++;
+      sp.picked=sp.picked.slice(0,n);
+      const need=sp.letters[n];const idx=sp.order.find(x=>!sp.picked.includes(x)&&sp.letters[x]===need);
+      if(idx!=null){sp.picked.push(idx);speak(need,.8)}
+      if(sp.picked.length===sp.letters.length){sp.done=true;star(1)}
+      renderSpell();if(sp.done){$("msg").className="msg good";$("msg").textContent="¡Lo hiciste! You did it"}
+      break}
+    case "sNext":newSpell();renderSpell();speak(full(S.spell.w));break;
+  }
+});
+render();
+</script>
+
+</body>
+</html>

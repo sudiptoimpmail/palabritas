@@ -15,7 +15,7 @@ A kid-friendly Spanish vocabulary app for parents and children to learn together
 
 Open `index.html` in any browser. That's all.
 
-### On iPhone (via GitHub Pages)
+### On iPhone or iPad (via GitHub Pages)
 
 1. In this repo, go to **Settings → Pages**. Set the source to **Deploy from a branch**, then choose `main` and `/ (root)`.
 2. Open `https://<your-username>.github.io/palabritas/` in Safari.

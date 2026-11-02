@@ -4,7 +4,7 @@ A kid-friendly Spanish vocabulary app for parents and children to learn together
 
 ## Features
 
-- **Aprender (Learn):** picture flashcards with *el/la*, an easy pronunciation guide with the stressed syllable highlighted (e.g. kah-**BAH**-yoh), and normal and slow audio. Say each word out loud 3 times together to earn a star.
+- **Aprender (Learn):** picture flashcards with *el/la*, an easy pronunciation guide with the stressed syllable highlighted (e.g. kah-**BAH**-yoh), and normal and slow audio. Swipe left or right to change words. Say each word out loud 3 times together to earn a star.
 - **Escuchar (Listen):** hear a word and tap the matching picture.
 - **Deletrear (Spell):** build the word from letter tiles, including ñ and accented letters, with spoken letters and hints.
 - Nearly 90 words in 10 topics: greetings, animals, colors, numbers 0–10, numbers 11–20, counting by tens to 100, food, family, body, and around the house.

@@ -70,6 +70,8 @@ button:focus-visible{outline:3px solid var(--rosa);outline-offset:3px}
 .dots{display:flex;gap:12px}
 .dot{width:46px;height:46px;border-radius:50%;border:3px solid var(--line);background:transparent;font-size:1.4rem;cursor:pointer;color:var(--ink)}
 .dot.on{background:var(--rosa);border-color:var(--rosa);color:#fff}
+.learn{touch-action:pan-y;-webkit-user-select:none;user-select:none;cursor:grab}
+.swipe{color:var(--soft);font-weight:800;font-size:.95rem;letter-spacing:.5px}
 .nav{display:flex;gap:10px;align-items:center;justify-content:space-between;width:100%}
 .count{font-weight:800;color:var(--soft);font-variant-numeric:tabular-nums}
 .choices{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%}
@@ -265,11 +267,7 @@ function renderLearn(){
       <p>Now say it out loud together, 3 times!</p>
       <div class="dots">${[0,1,2].map(d=>`<button class="dot ${d<S.reps?"on":""}" data-act="rep" aria-label="Said it ${d+1}">${d<S.reps?"✓":d+1}</button>`).join("")}</div>
     </div>
-    <div class="nav">
-      <button class="btn ghost" data-act="prev" aria-label="Previous word">←</button>
-      <span class="count">${S.i+1} / ${ws.length}</span>
-      <button class="btn ghost" data-act="next" aria-label="Next word">→</button>
-    </div>
+    <div class="nav"><span class="swipe" aria-hidden="true">‹ swipe</span><span class="count">${S.i+1} / ${ws.length}</span><span class="swipe" aria-hidden="true">swipe ›</span></div>
   </section>`;
 }
 
@@ -315,6 +313,7 @@ function render(){renderChrome();({learn:renderLearn,listen:renderListen,spell:r
 
 // ---- actions ----
 document.addEventListener("click",e=>{
+  if(swiped){swiped=false;return}
   const b=e.target.closest("[data-act]");if(!b)return;
   const act=b.dataset.act,k=b.dataset.k,ws=words();
   switch(act){
@@ -324,8 +323,7 @@ document.addEventListener("click",e=>{
     case "hear":speak(full(ws[S.i]));break;
     case "slow":speak(full(ws[S.i]),.5);break;
     case "rep":speak(full(ws[S.i]));S.reps=Math.min(3,S.reps+1);if(S.reps===3){star();setTimeout(()=>speak(praise[Math.floor(Math.random()*praise.length)]),900)}renderLearn();break;
-    case "prev":S.i=(S.i-1+ws.length)%ws.length;S.reps=0;renderLearn();speak(full(ws[S.i]));break;
-    case "next":S.i=(S.i+1)%ws.length;S.reps=0;renderLearn();speak(full(ws[S.i]));break;
+
     case "qplay":speak(S.q.a[0]);break;
     case "qslow":speak(S.q.a[0],.5);break;
     case "pick":{
@@ -359,6 +357,55 @@ document.addEventListener("click",e=>{
       break}
     case "sNext":newSpell();renderSpell();speak(full(S.spell.w));break;
   }
+});
+// ---- swipe between words (Learn) ----
+const calm=matchMedia("(prefers-reduced-motion: reduce)").matches;
+let drag=null,swiped=false,busy=false;
+const card=()=>document.querySelector(".learn");
+function step(dir){ // dir 1 = next word, -1 = previous
+  if(busy)return;const ws=words();
+  S.i=(S.i+dir+ws.length)%ws.length;S.reps=0;
+  speak(full(ws[S.i]));
+  const c=card();
+  if(calm||!c){renderLearn();return}
+  busy=true;
+  c.style.transition="transform .22s ease-in, opacity .22s";
+  c.style.transform=`translateX(${-dir*110}%) rotate(${-dir*6}deg)`;c.style.opacity="0";
+  setTimeout(()=>{
+    renderLearn();const n=card();
+    n.style.transition="none";n.style.transform=`translateX(${dir*40}%)`;n.style.opacity="0";
+    void n.offsetWidth;
+    n.style.transition="transform .25s ease-out, opacity .25s";n.style.transform="";n.style.opacity="";
+    setTimeout(()=>{busy=false},260);
+  },200);
+}
+$("view").addEventListener("pointerdown",e=>{
+  if(S.mode!=="learn"||busy||!e.isPrimary)return;
+  const c=e.target.closest(".learn");if(!c)return;
+  drag={x:e.clientX,y:e.clientY,dx:0,h:null,c};
+});
+addEventListener("pointermove",e=>{
+  if(!drag)return;
+  const dx=e.clientX-drag.x,dy=e.clientY-drag.y;
+  if(drag.h===null&&(Math.abs(dx)>10||Math.abs(dy)>10))drag.h=Math.abs(dx)>Math.abs(dy);
+  if(!drag.h)return;
+  drag.dx=dx;drag.c.style.transition="none";
+  drag.c.style.transform=`translateX(${dx}px) rotate(${dx/40}deg)`;
+});
+function endDrag(){
+  if(!drag)return;const d=drag;drag=null;
+  if(!d.h)return;
+  swiped=true;setTimeout(()=>{swiped=false},350);
+  const far=Math.abs(d.dx)>Math.min(90,d.c.offsetWidth*.22);
+  if(far)step(d.dx<0?1:-1);
+  else{d.c.style.transition="transform .2s ease-out";d.c.style.transform=""}
+}
+addEventListener("pointerup",endDrag);
+addEventListener("pointercancel",()=>{if(drag&&drag.c){drag.c.style.transition="transform .2s";drag.c.style.transform=""}drag=null});
+addEventListener("keydown",e=>{
+  if(S.mode!=="learn"||e.target.closest("select,input"))return;
+  if(e.key==="ArrowRight"){e.preventDefault();step(1)}
+  if(e.key==="ArrowLeft"){e.preventDefault();step(-1)}
 });
 render();
 </script>

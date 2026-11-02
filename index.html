@@ -50,6 +50,8 @@ h1 span{color:var(--rosa)}
 .card{background:var(--paper);border:2px solid var(--line);border-radius:28px;padding:22px 18px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;box-shadow:0 6px 0 var(--line)}
 .pic{font-size:7.5rem;line-height:1.1;border:0;background:none;cursor:pointer;padding:0;user-select:none}
 .pic:active{transform:scale(.94)}
+.num{font-family:var(--display);font-weight:700;color:var(--teal);font-size:.8em;line-height:1;font-variant-numeric:tabular-nums;display:inline-block;padding:.05em .1em}
+.choice .num{font-size:.85em}
 .word{font-family:var(--display);font-weight:700;font-size:2.6rem;line-height:1.05;text-wrap:balance}
 .art{color:var(--rosa)}
 .say{font-family:var(--display);font-weight:500;font-size:1.25rem;color:var(--teal);letter-spacing:.5px}
@@ -166,7 +168,9 @@ const CATS=[
  {n:"Saludos",en:"Hello",i:"👋",w:[["hola","","hello","😊","OH-lah"],["adiós","","goodbye","👋","ah-DYOHS"],["gracias","","thank you","🙏","GRAH-syahs"],["por favor","","please","🥺","por fah-BOR"],["buenos días","","good morning","🌅","BWEH-nohs DEE-ahs"],["buenas noches","","good night","🌙","BWEH-nahs NOH-chehs"],["sí","","yes","👍","SEE"],["no","","no","👎","NOH"]]},
  {n:"Animales",en:"Animals",i:"🐶",w:[["perro","el","dog","🐶","PEH-rroh"],["gato","el","cat","🐱","GAH-toh"],["pájaro","el","bird","🐦","PAH-hah-roh"],["pez","el","fish","🐟","PEHS"],["vaca","la","cow","🐮","BAH-kah"],["caballo","el","horse","🐴","kah-BAH-yoh"],["conejo","el","rabbit","🐰","koh-NEH-hoh"],["oso","el","bear","🐻","OH-soh"]]},
  {n:"Colores",en:"Colors",i:"🎨",w:[["rojo","","red","🔴","ROH-hoh"],["azul","","blue","🔵","ah-SOOL"],["verde","","green","🟢","BEHR-deh"],["amarillo","","yellow","🟡","ah-mah-REE-yoh"],["naranja","","orange","🟠","nah-RAHN-hah"],["morado","","purple","🟣","moh-RAH-doh"],["negro","","black","⚫","NEH-groh"],["blanco","","white","⚪","BLAHN-koh"]]},
- {n:"Números",en:"Numbers",i:"🔢",w:[["uno","","one","1️⃣","OO-noh"],["dos","","two","2️⃣","DOHS"],["tres","","three","3️⃣","TREHS"],["cuatro","","four","4️⃣","KWAH-troh"],["cinco","","five","5️⃣","SEEN-koh"],["seis","","six","6️⃣","SAYS"],["siete","","seven","7️⃣","SYEH-teh"],["ocho","","eight","8️⃣","OH-choh"],["nueve","","nine","9️⃣","NWEH-beh"],["diez","","ten","🔟","DYEHS"]]},
+ {n:"Números",en:"0–10",i:"🔢",w:[["cero","","zero","0","SEH-roh"],["uno","","one","1","OO-noh"],["dos","","two","2","DOHS"],["tres","","three","3","TREHS"],["cuatro","","four","4","KWAH-troh"],["cinco","","five","5","SEEN-koh"],["seis","","six","6","SAYS"],["siete","","seven","7","SYEH-teh"],["ocho","","eight","8","OH-choh"],["nueve","","nine","9","NWEH-beh"],["diez","","ten","10","DYEHS"]]},
+ {n:"Más números",en:"11–20",i:"➕",w:[["once","","eleven","11","OHN-seh"],["doce","","twelve","12","DOH-seh"],["trece","","thirteen","13","TREH-seh"],["catorce","","fourteen","14","kah-TOR-seh"],["quince","","fifteen","15","KEEN-seh"],["dieciséis","","sixteen","16","dyeh-see-SAYS"],["diecisiete","","seventeen","17","dyeh-see-SYEH-teh"],["dieciocho","","eighteen","18","dyeh-SYOH-choh"],["diecinueve","","nineteen","19","dyeh-see-NWEH-beh"],["veinte","","twenty","20","BAYN-teh"]]},
+ {n:"Decenas",en:"Tens to 100",i:"💯",w:[["diez","","ten","10","DYEHS"],["veinte","","twenty","20","BAYN-teh"],["treinta","","thirty","30","TRAYN-tah"],["cuarenta","","forty","40","kwah-REHN-tah"],["cincuenta","","fifty","50","seen-KWEHN-tah"],["sesenta","","sixty","60","seh-SEHN-tah"],["setenta","","seventy","70","seh-TEHN-tah"],["ochenta","","eighty","80","oh-CHEHN-tah"],["noventa","","ninety","90","noh-BEHN-tah"],["cien","","one hundred","100","SYEHN"]]},
  {n:"Comida",en:"Food",i:"🍎",w:[["manzana","la","apple","🍎","mahn-SAH-nah"],["plátano","el","banana","🍌","PLAH-tah-noh"],["agua","el","water","💧","AH-gwah"],["leche","la","milk","🥛","LEH-cheh"],["pan","el","bread","🍞","PAHN"],["queso","el","cheese","🧀","KEH-soh"],["huevo","el","egg","🥚","WEH-boh"],["galleta","la","cookie","🍪","gah-YEH-tah"]]},
  {n:"Familia",en:"Family",i:"👨‍👩‍👧",w:[["mamá","la","mom","👩","mah-MAH"],["papá","el","dad","👨","pah-PAH"],["hermano","el","brother","👦","ehr-MAH-noh"],["hermana","la","sister","👧","ehr-MAH-nah"],["abuelo","el","grandpa","👴","ah-BWEH-loh"],["abuela","la","grandma","👵","ah-BWEH-lah"],["bebé","el","baby","👶","beh-BEH"],["familia","la","family","👨‍👩‍👧","fah-MEE-lyah"]]},
  {n:"El cuerpo",en:"Body",i:"✋",w:[["mano","la","hand","✋","MAH-noh"],["pie","el","foot","🦶","PYEH"],["ojo","el","eye","👁️","OH-hoh"],["nariz","la","nose","👃","nah-REES"],["boca","la","mouth","👄","BOH-kah"],["oreja","la","ear","👂","oh-REH-hah"],["diente","el","tooth","🦷","DYEHN-teh"],["pelo","el","hair","💇","PEH-loh"]]},
@@ -178,6 +182,7 @@ const $=id=>document.getElementById(id);
 const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 S.stars=store.get("pal_stars",0);S.cat=Math.min(store.get("pal_cat",0),CATS.length-1);
 const words=()=>CATS[S.cat].w;
+const pic=p=>/^\d+$/.test(p)?`<span class="num">${p}</span>`:p;
 const full=w=>(w[1]?w[1]+" ":"")+w[0];
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -248,7 +253,7 @@ function sayHTML(p){return esc(p).split(/([- ])/).map(s=>/^[A-Z]+$/.test(s)?`<b>
 function renderLearn(){
   const ws=words(),w=ws[S.i];
   $("view").innerHTML=`<section class="card learn">
-    <button class="pic" data-act="hear" aria-label="Hear ${esc(w[0])}">${w[3]}</button>
+    <button class="pic" data-act="hear" aria-label="Hear ${esc(w[0])}">${pic(w[3])}</button>
     <div class="word">${w[1]?`<span class="art">${w[1]}</span> `:""}${esc(w[0])}</div>
     <div class="say" aria-label="Pronunciation">${sayHTML(w[4])}</div>
     <div class="en">${esc(w[2])}</div>
@@ -279,7 +284,7 @@ function renderListen(){
   $("view").innerHTML=`<section class="card">
     <p class="prompt">Listen, then tap the right picture</p>
     <div class="row"><button class="btn hear big" data-act="qplay">🔊 Play the word</button><button class="btn slow" data-act="qslow">🐢</button></div>
-    <div class="choices">${q.opts.map((o,k)=>`<button class="choice" data-act="pick" data-k="${k}" aria-label="${esc(o[2])}">${o[3]}</button>`).join("")}</div>
+    <div class="choices">${q.opts.map((o,k)=>`<button class="choice" data-act="pick" data-k="${k}" aria-label="${esc(o[2])}">${pic(o[3])}</button>`).join("")}</div>
     <div class="msg" id="msg" aria-live="polite"></div>
     <button class="btn ghost" data-act="qnext" id="qnext" ${q.done?"":"hidden"}>Next word →</button>
   </section>`;
@@ -297,7 +302,7 @@ function renderSpell(){
   if(!S.spell)newSpell();
   const sp=S.spell,w=sp.w;
   $("view").innerHTML=`<section class="card">
-    <button class="pic" data-act="sHear" aria-label="Hear the word" style="font-size:5.5rem">${w[3]}</button>
+    <button class="pic" data-act="sHear" aria-label="Hear the word" style="font-size:5.5rem">${pic(w[3])}</button>
     <div class="en">${esc(w[2])}</div>
     <div class="row"><button class="btn hear" data-act="sHear">🔊 Hear it</button><button class="btn slow" data-act="sSlow">🐢</button></div>
     <div class="slots ${sp.done?"ok":""}" id="slots">${sp.letters.map((l,k)=>`<div class="slot ${k<sp.picked.length?"fill":""}">${k<sp.picked.length?esc(sp.letters[sp.picked[k]]):""}</div>`).join("")}</div>

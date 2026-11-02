@@ -16,7 +16,7 @@ Rounds end with a trophy and 1–3 stars, and celebrate any new level that opene
 
 ## Content
 
-There are 173 words and sentences in 9 topics and 25 levels:
+There are 212 words, sight words and sentences in 9 topics and 31 levels:
 
 - **Saludos:** first words, then all day
 - **Animales:** pets, farm, wild, water, forest and bugs
@@ -26,7 +26,16 @@ There are 173 words and sentences in 9 topics and 25 levels:
 - **Familia:** close family, big family
 - **El cuerpo:** face and hands, whole body
 - **Mi mundo:** at home, outside, going places
-- **Frases:** *Tengo un perro*, *La rana es verde*, *Me cepillo los dientes*…
+- **Frases**, which starts from zero and moves in small steps:
+  1. *Yo soy* (I am): *Yo soy {name}*, *Me llamo {name}*, *Soy una niña*, *Estoy feliz*
+  2. Sight words: *yo, tú, él, ella, soy, eres, es*
+  3. *Tú, él, ella* (you, he, she): *Él es mi papá*, *Ella es mi mamá*
+  4. Sight words: *nosotros, ellos, ellas, somos, son, y*
+  5. *Nosotros y ellos* (we, they): *Somos una familia*, *Ellos son gatos*
+  6. Sight words: *un, una, el, la, mi, tengo, quiero, me gusta*
+  7. *Me gusta* (I like and I want), then 8. *¿Cómo es?* (What is it like?), then 9. *Mi día* (My day)
+
+  The child's own name and buddy picture appear in the first sentences. In sight-word levels, Listen becomes a reading game (hear it, then tap the written word) and the third activity is Spell.
 
 ## Adaptive practice
 
@@ -64,9 +73,13 @@ Open `index.html` in any browser. Keep the `img` folder next to it.
 
 To share with other families, send them the same link. Each family's progress stays on their own devices.
 
-## Better voice
+## Voice
 
-The app uses the device's built-in text-to-speech and automatically picks the best Spanish voice installed. For a much more natural sound, go to **Settings → Accessibility → Spoken Content → Voices → Spanish** and download the **Premium** or **Enhanced** version of **Mónica** or **Paulina**. Then reopen the app. You can choose the voice in ⚙️.
+Every word, sentence, letter name and cheer is a recording of the natural Spanish voice **Dora** from the open-source [Kokoro](https://github.com/hexgrad/kokoro) text-to-speech model, stored in `audio/` (311 small MP3s, about 2 MB). It sounds the same on every device. 🐢 Slow plays the same recording at 70% speed.
+
+The device's own voice is used only to say the child's name, or if a recording can't load. You can pick that voice in ⚙️.
+
+To record new words, add them to `tools/words.py`, then run `tools/clips.py` and `tools/record.py`. You'll need `pip install kokoro-onnx soundfile`, ffmpeg, and the model files `kokoro-v1.0.onnx` and `voices-v1.0.bin` from the kokoro-onnx GitHub releases.
 
 ## Add words
 
@@ -80,5 +93,7 @@ Content lives in the `TOPICS` list at the top of the `<script>`. Each topic has 
 The picture can be `i:<name>` for `img/<name>.webp`, `#RRGGBB` for a color swatch, or `n:<number>` for a number. Sentence topics have `"k":"s"`.
 
 ## Credits
+
+The voice is Kokoro (Apache 2.0 License), voice `ef_dora`.
 
 The illustrations are from [Fluent Emoji](https://github.com/microsoft/fluentui-emoji) by Microsoft, used under the MIT License and resized to WebP.

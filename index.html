@@ -134,6 +134,9 @@ button.pill{cursor:pointer;color:var(--teal)}
 .tf i.on{background:var(--rosa)}
 .tens{display:flex;gap:calc(var(--u)*.3)}
 .tens i{width:calc(var(--u)*.75);height:calc(var(--u)*3.6);border-radius:4px;background:repeating-linear-gradient(to bottom,var(--marigold) 0 calc(var(--u)*.3),transparent calc(var(--u)*.3) calc(var(--u)*.36))}
+.tword{display:grid;place-items:center;min-width:clamp(170px,52vw,250px);min-height:clamp(120px,36vw,170px);padding:10px 22px;border-radius:30px;background:var(--paper);border:3px solid var(--line);box-shadow:0 6px 0 var(--line);font:700 clamp(2.6rem,12vw,4.2rem)/1.05 var(--display);color:var(--teal);text-align:center}
+.choice .tword{min-width:0;min-height:0;width:100%;padding:16px 4px;font-size:clamp(1.6rem,7vw,2.4rem);box-shadow:none;border:0;background:none}
+.spic .tword{min-width:150px;min-height:100px;font-size:2.6rem}
 .word{font-family:var(--display);font-weight:700;font-size:2.6rem;line-height:1.05;text-wrap:balance}
 .word.sent{font-size:2rem;display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
 .wchip{border:0;background:var(--halo);border-radius:12px;padding:2px 10px;font:inherit;color:inherit;cursor:pointer}
@@ -264,7 +267,8 @@ button.pill{cursor:pointer;color:var(--teal)}
   .learn .word.sent{justify-content:flex-start}
   .learn .repeat{align-items:flex-start}
   .learn .nav{grid-column:1 / -1}
-  .learn .pimg{width:min(100%,320px)} .learn .swatch{width:min(100%,280px)} .learn .numpic{--u:20px}
+  .learn .pimg{width:min(100%,320px)} .learn .swatch{width:min(100%,280px)} .learn .numpic{--u:20px} .learn .tword{min-width:300px;min-height:220px;font-size:5.2rem}
+  .choice .tword{font-size:2.6rem}
   .word{font-size:4.2rem} .word.sent{font-size:2.8rem} .say{font-size:1.7rem} .en{font-size:1rem} .en.s{font-size:1.3rem}
   .btn{font-size:1.2rem;min-height:60px;padding:15px 24px;border-radius:20px}
   .prompt{font-size:1.7rem}
@@ -366,10 +370,11 @@ button.pill{cursor:pointer;color:var(--teal)}
   </header>
   <div class="panel">
     <h3>Voice</h3>
+    <p class="note">Every word, sentence and cheer is a recording of a natural Spanish voice, so it sounds the same on every device.</p>
+    <button class="big-btn alt small" data-act="vtest">▶ Play a sample</button>
     <div class="note" id="voiceNote" hidden></div>
-    <label class="field">Spanish voice<select id="vsel"></select></label>
-    <button class="big-btn alt small" data-act="vtest">▶ Test voice</button>
-    <p class="note">For the most natural sound: <b>Settings → Accessibility → Spoken Content → Voices → Spanish</b>, then download <b>Mónica</b> or <b>Paulina</b> (Premium or Enhanced) and reopen this app.</p>
+    <label class="field">Device voice (says your child's name)<select id="vsel"></select></label>
+    <button class="big-btn alt small" data-act="vtest2">▶ Test device voice</button>
   </div>
   <div class="panel"><h3>Children</h3><div id="kidList" style="display:flex;flex-direction:column;gap:10px"></div>
     <button class="big-btn alt small" data-act="newKid">＋ Add a child</button></div>
@@ -384,7 +389,8 @@ button.pill{cursor:pointer;color:var(--teal)}
 <div id="toastBox"></div>
 
 <script>
-const TOPICS=[{"n":"Saludos","en":"Hello","i":"waving-hand","c":"#E8507A","L":[{"n":"Primeras palabras","en":"First words","w":[["hola","","hello","i:smiling-face-with-smiling-eyes","OH-lah"],["adiós","","goodbye","i:waving-hand","ah-DYOHS"],["gracias","","thank you","i:folded-hands","GRAH-syahs"],["por favor","","please","i:pleading-face","por fah-BOR"],["sí","","yes","i:thumbs-up","SEE"],["no","","no","i:thumbs-down","NOH"]]},{"n":"Todo el día","en":"All day","w":[["buenos días","","good morning","i:sunrise","BWEH-nohs DEE-ahs"],["buenas tardes","","good afternoon","i:sun","BWEH-nahs TAR-dehs"],["buenas noches","","good night","i:night-with-stars","BWEH-nahs NOH-chehs"],["te quiero","","I love you","i:red-heart","teh KYEH-roh"],["bien","","good","i:ok-hand","BYEHN"],["de nada","","you're welcome","i:hugging-face","deh NAH-dah"]]}]},{"n":"Animales","en":"Animals","i":"dog-face","c":"#E07B00","L":[{"n":"Mascotas","en":"Pets","w":[["perro","el","dog","i:dog-face","PEH-rroh"],["gato","el","cat","i:cat-face","GAH-toh"],["pájaro","el","bird","i:bird","PAH-hah-roh"],["pez","el","fish","i:tropical-fish","PEHS"],["conejo","el","rabbit","i:rabbit-face","koh-NEH-hoh"],["ratón","el","mouse","i:mouse-face","rah-TOHN"],["tortuga","la","turtle","i:turtle","tor-TOO-gah"]]},{"n":"La granja","en":"Farm","w":[["caballo","el","horse","i:horse-face","kah-BAH-yoh"],["vaca","la","cow","i:cow-face","BAH-kah"],["cerdo","el","pig","i:pig-face","SEHR-doh"],["oveja","la","sheep","i:ewe","oh-BEH-hah"],["cabra","la","goat","i:goat","KAH-brah"],["gallina","la","hen","i:chicken","gah-YEE-nah"],["pato","el","duck","i:duck","PAH-toh"]]},{"n":"La selva","en":"Wild","w":[["león","el","lion","i:lion","leh-OHN"],["tigre","el","tiger","i:tiger-face","TEE-greh"],["elefante","el","elephant","i:elephant","eh-leh-FAHN-teh"],["mono","el","monkey","i:monkey-face","MOH-noh"],["jirafa","la","giraffe","i:giraffe","hee-RAH-fah"],["cebra","la","zebra","i:zebra","SEH-brah"],["oso","el","bear","i:bear","OH-soh"]]},{"n":"El agua","en":"Water","w":[["delfín","el","dolphin","i:dolphin","dehl-FEEN"],["ballena","la","whale","i:spouting-whale","bah-YEH-nah"],["tiburón","el","shark","i:shark","tee-boo-ROHN"],["pulpo","el","octopus","i:octopus","POOL-poh"],["pingüino","el","penguin","i:penguin","peeng-GWEE-noh"],["cocodrilo","el","crocodile","i:crocodile","koh-koh-DREE-loh"],["rana","la","frog","i:frog","RAH-nah"]]},{"n":"Bosque y bichitos","en":"Forest & bugs","w":[["lobo","el","wolf","i:wolf","LOH-boh"],["zorro","el","fox","i:fox","SOH-rroh"],["búho","el","owl","i:owl","BOO-oh"],["serpiente","la","snake","i:snake","sehr-PYEHN-teh"],["mariposa","la","butterfly","i:butterfly","mah-ree-POH-sah"],["abeja","la","bee","i:honeybee","ah-BEH-hah"],["hormiga","la","ant","i:ant","or-MEE-gah"],["caracol","el","snail","i:snail","kah-rah-KOHL"]]}]},{"n":"Colores","en":"Colors","i":"artist-palette","c":"#7C5CD6","L":[{"n":"Colores vivos","en":"Bright colors","w":[["rojo","","red","#E53935","ROH-hoh"],["azul","","blue","#1E6FD9","ah-SOOL"],["amarillo","","yellow","#FDD835","ah-mah-REE-yoh"],["verde","","green","#43A047","BEHR-deh"],["naranja","","orange","#FB8C00","nah-RAHN-hah"]]},{"n":"Más colores","en":"More colors","w":[["morado","","purple","#8E44AD","moh-RAH-doh"],["rosa","","pink","#F06292","ROH-sah"],["marrón","","brown","#8D5524","mah-RROHN"],["negro","","black","#222222","NEH-groh"],["blanco","","white","#FFFFFF","BLAHN-koh"],["gris","","gray","#9E9E9E","GREES"]]}]},{"n":"Números","en":"Numbers","i":"input-numbers","c":"#1C8C83","L":[{"n":"Del 0 al 10","en":"0–10","w":[["cero","","zero","n:0","SEH-roh"],["uno","","one","n:1","OO-noh"],["dos","","two","n:2","DOHS"],["tres","","three","n:3","TREHS"],["cuatro","","four","n:4","KWAH-troh"],["cinco","","five","n:5","SEEN-koh"],["seis","","six","n:6","SAYS"],["siete","","seven","n:7","SYEH-teh"],["ocho","","eight","n:8","OH-choh"],["nueve","","nine","n:9","NWEH-beh"],["diez","","ten","n:10","DYEHS"]]},{"n":"Del 11 al 20","en":"11–20","w":[["once","","eleven","n:11","OHN-seh"],["doce","","twelve","n:12","DOH-seh"],["trece","","thirteen","n:13","TREH-seh"],["catorce","","fourteen","n:14","kah-TOR-seh"],["quince","","fifteen","n:15","KEEN-seh"],["dieciséis","","sixteen","n:16","dyeh-see-SAYS"],["diecisiete","","seventeen","n:17","dyeh-see-SYEH-teh"],["dieciocho","","eighteen","n:18","dyeh-SYOH-choh"],["diecinueve","","nineteen","n:19","dyeh-see-NWEH-beh"],["veinte","","twenty","n:20","BAYN-teh"]]},{"n":"Decenas","en":"Tens to 100","w":[["diez","","ten","n:10","DYEHS"],["veinte","","twenty","n:20","BAYN-teh"],["treinta","","thirty","n:30","TRAYN-tah"],["cuarenta","","forty","n:40","kwah-REHN-tah"],["cincuenta","","fifty","n:50","seen-KWEHN-tah"],["sesenta","","sixty","n:60","seh-SEHN-tah"],["setenta","","seventy","n:70","seh-TEHN-tah"],["ochenta","","eighty","n:80","oh-CHEHN-tah"],["noventa","","ninety","n:90","noh-BEHN-tah"],["cien","","one hundred","n:100","SYEHN"]]}]},{"n":"Comida","en":"Food","i":"red-apple","c":"#D9453B","L":[{"n":"Para empezar","en":"Basics","w":[["manzana","la","apple","i:red-apple","mahn-SAH-nah"],["plátano","el","banana","i:banana","PLAH-tah-noh"],["agua","el","water","i:droplet","AH-gwah"],["leche","la","milk","i:glass-of-milk","LEH-cheh"],["pan","el","bread","i:bread","PAHN"],["huevo","el","egg","i:egg","WEH-boh"],["queso","el","cheese","i:cheese-wedge","KEH-soh"]]},{"n":"Frutas y dulces","en":"Fruit & treats","w":[["galleta","la","cookie","i:cookie","gah-YEH-tah"],["fresa","la","strawberry","i:strawberry","FREH-sah"],["uvas","las","grapes","i:grapes","OO-bahs"],["sandía","la","watermelon","i:watermelon","sahn-DEE-ah"],["zanahoria","la","carrot","i:carrot","sah-nah-OH-ryah"],["helado","el","ice cream","i:soft-ice-cream","eh-LAH-doh"]]},{"n":"A comer","en":"Mealtime","w":[["pollo","el","chicken","i:poultry-leg","POH-yoh"],["arroz","el","rice","i:cooked-rice","ah-RROHS"],["sopa","la","soup","i:pot-of-food","SOH-pah"],["jugo","el","juice","i:beverage-box","HOO-goh"],["tomate","el","tomato","i:tomato","toh-MAH-teh"],["pizza","la","pizza","i:pizza","PEET-sah"],["pastel","el","cake","i:birthday-cake","pahs-TEHL"]]}]},{"n":"Familia","en":"Family","i":"baby","c":"#2F80ED","L":[{"n":"Mi casa","en":"Close family","w":[["mamá","la","mom","i:woman","mah-MAH"],["papá","el","dad","i:man","pah-PAH"],["bebé","el","baby","i:baby","beh-BEH"],["hermano","el","brother","i:boy","ehr-MAH-noh"],["hermana","la","sister","i:girl","ehr-MAH-nah"],["familia","la","family","i:smiling-face-with-hearts","fah-MEE-lyah"]]},{"n":"Familia grande","en":"Big family","w":[["abuelo","el","grandpa","i:old-man","ah-BWEH-loh"],["abuela","la","grandma","i:old-woman","ah-BWEH-lah"],["tío","el","uncle","i:man-beard","TEE-oh"],["tía","la","aunt","i:woman-curly-hair","TEE-ah"],["primo","el","cousin","i:child","PREE-moh"],["amigo","el","friend","i:handshake","ah-MEE-goh"]]}]},{"n":"El cuerpo","en":"Body","i":"raised-hand","c":"#B04CA8","L":[{"n":"La cara y más","en":"Face & hands","w":[["ojo","el","eye","i:eye","OH-hoh"],["nariz","la","nose","i:nose","nah-REES"],["boca","la","mouth","i:mouth","BOH-kah"],["oreja","la","ear","i:ear","oh-REH-hah"],["mano","la","hand","i:raised-hand","MAH-noh"],["pie","el","foot","i:foot","PYEH"]]},{"n":"Todo el cuerpo","en":"Whole body","w":[["diente","el","tooth","i:tooth","DYEHN-teh"],["lengua","la","tongue","i:tongue","LEHN-gwah"],["dedo","el","finger","i:index-pointing-up","DEH-doh"],["brazo","el","arm","i:flexed-biceps","BRAH-soh"],["pierna","la","leg","i:leg","PYEHR-nah"],["corazón","el","heart","i:anatomical-heart","koh-rah-SOHN"]]}]},{"n":"Mi mundo","en":"My world","i":"house","c":"#3B9B4F","L":[{"n":"En casa","en":"At home","w":[["casa","la","house","i:house-with-garden","KAH-sah"],["cama","la","bed","i:bed","KAH-mah"],["silla","la","chair","i:chair","SEE-yah"],["puerta","la","door","i:door","PWEHR-tah"],["libro","el","book","i:closed-book","LEE-broh"],["pelota","la","ball","i:soccer-ball","peh-LOH-tah"],["juguete","el","toy","i:teddy-bear","hoo-GEH-teh"]]},{"n":"Afuera","en":"Outside","w":[["sol","el","sun","i:sun-with-face","SOHL"],["luna","la","moon","i:full-moon-face","LOO-nah"],["estrella","la","star","i:star","ehs-TREH-yah"],["árbol","el","tree","i:deciduous-tree","AHR-bohl"],["flor","la","flower","i:tulip","FLOR"],["nube","la","cloud","i:cloud","NOO-beh"],["lluvia","la","rain","i:cloud-with-rain","YOO-byah"]]},{"n":"¡Vámonos!","en":"Going places","w":[["carro","el","car","i:automobile","KAH-rroh"],["autobús","el","bus","i:bus","ow-toh-BOOS"],["tren","el","train","i:locomotive","TREHN"],["avión","el","airplane","i:airplane","ah-BYOHN"],["barco","el","boat","i:sailboat","BAR-koh"],["bicicleta","la","bike","i:bicycle","bee-see-KLEH-tah"]]}]},{"n":"Frases","en":"Sentences","i":"speech-balloon","c":"#0E8FA8","k":"s","L":[{"n":"Me gusta","en":"I like & I want","w":[["Tengo un perro.","","I have a dog.","i:dog-face",""],["Tengo un gato.","","I have a cat.","i:cat-face",""],["Me gusta la pizza.","","I like pizza.","i:pizza",""],["Me gusta el helado.","","I like ice cream.","i:soft-ice-cream",""],["Quiero agua.","","I want water.","i:droplet",""],["Quiero leche, por favor.","","I want milk, please.","i:glass-of-milk",""]]},{"n":"¿Cómo es?","en":"What is it like?","w":[["El sol es amarillo.","","The sun is yellow.","i:sun-with-face",""],["La manzana es roja.","","The apple is red.","i:red-apple",""],["La rana es verde.","","The frog is green.","i:frog",""],["El elefante es grande.","","The elephant is big.","i:elephant",""],["El ratón es pequeño.","","The mouse is small.","i:mouse-face",""],["La jirafa es alta.","","The giraffe is tall.","i:giraffe",""]]},{"n":"Mi día","en":"My day","w":[["Buenos días, mamá.","","Good morning, Mom.","i:sunrise",""],["Tengo hambre.","","I'm hungry.","i:pot-of-food",""],["Vamos en el carro.","","Let's go in the car.","i:automobile",""],["Papá lee un libro.","","Dad reads a book.","i:closed-book",""],["Me cepillo los dientes.","","I brush my teeth.","i:tooth",""],["Buenas noches, papá.","","Good night, Dad.","i:night-with-stars",""],["Te quiero mucho.","","I love you very much.","i:red-heart",""]]}]}];
+const TOPICS=[{"n":"Saludos","en":"Hello","i":"waving-hand","c":"#E8507A","L":[{"n":"Primeras palabras","en":"First words","w":[["hola","","hello","i:smiling-face-with-smiling-eyes","OH-lah"],["adiós","","goodbye","i:waving-hand","ah-DYOHS"],["gracias","","thank you","i:folded-hands","GRAH-syahs"],["por favor","","please","i:pleading-face","por fah-BOR"],["sí","","yes","i:thumbs-up","SEE"],["no","","no","i:thumbs-down","NOH"]]},{"n":"Todo el día","en":"All day","w":[["buenos días","","good morning","i:sunrise","BWEH-nohs DEE-ahs"],["buenas tardes","","good afternoon","i:sun","BWEH-nahs TAR-dehs"],["buenas noches","","good night","i:night-with-stars","BWEH-nahs NOH-chehs"],["te quiero","","I love you","i:red-heart","teh KYEH-roh"],["bien","","good","i:ok-hand","BYEHN"],["de nada","","you're welcome","i:hugging-face","deh NAH-dah"]]}]},{"n":"Animales","en":"Animals","i":"dog-face","c":"#E07B00","L":[{"n":"Mascotas","en":"Pets","w":[["perro","el","dog","i:dog-face","PEH-rroh"],["gato","el","cat","i:cat-face","GAH-toh"],["pájaro","el","bird","i:bird","PAH-hah-roh"],["pez","el","fish","i:tropical-fish","PEHS"],["conejo","el","rabbit","i:rabbit-face","koh-NEH-hoh"],["ratón","el","mouse","i:mouse-face","rah-TOHN"],["tortuga","la","turtle","i:turtle","tor-TOO-gah"]]},{"n":"La granja","en":"Farm","w":[["caballo","el","horse","i:horse-face","kah-BAH-yoh"],["vaca","la","cow","i:cow-face","BAH-kah"],["cerdo","el","pig","i:pig-face","SEHR-doh"],["oveja","la","sheep","i:ewe","oh-BEH-hah"],["cabra","la","goat","i:goat","KAH-brah"],["gallina","la","hen","i:chicken","gah-YEE-nah"],["pato","el","duck","i:duck","PAH-toh"]]},{"n":"La selva","en":"Wild","w":[["león","el","lion","i:lion","leh-OHN"],["tigre","el","tiger","i:tiger-face","TEE-greh"],["elefante","el","elephant","i:elephant","eh-leh-FAHN-teh"],["mono","el","monkey","i:monkey-face","MOH-noh"],["jirafa","la","giraffe","i:giraffe","hee-RAH-fah"],["cebra","la","zebra","i:zebra","SEH-brah"],["oso","el","bear","i:bear","OH-soh"]]},{"n":"El agua","en":"Water","w":[["delfín","el","dolphin","i:dolphin","dehl-FEEN"],["ballena","la","whale","i:spouting-whale","bah-YEH-nah"],["tiburón","el","shark","i:shark","tee-boo-ROHN"],["pulpo","el","octopus","i:octopus","POOL-poh"],["pingüino","el","penguin","i:penguin","peeng-GWEE-noh"],["cocodrilo","el","crocodile","i:crocodile","koh-koh-DREE-loh"],["rana","la","frog","i:frog","RAH-nah"]]},{"n":"Bosque y bichitos","en":"Forest & bugs","w":[["lobo","el","wolf","i:wolf","LOH-boh"],["zorro","el","fox","i:fox","SOH-rroh"],["búho","el","owl","i:owl","BOO-oh"],["serpiente","la","snake","i:snake","sehr-PYEHN-teh"],["mariposa","la","butterfly","i:butterfly","mah-ree-POH-sah"],["abeja","la","bee","i:honeybee","ah-BEH-hah"],["hormiga","la","ant","i:ant","or-MEE-gah"],["caracol","el","snail","i:snail","kah-rah-KOHL"]]}]},{"n":"Colores","en":"Colors","i":"artist-palette","c":"#7C5CD6","L":[{"n":"Colores vivos","en":"Bright colors","w":[["rojo","","red","#E53935","ROH-hoh"],["azul","","blue","#1E6FD9","ah-SOOL"],["amarillo","","yellow","#FDD835","ah-mah-REE-yoh"],["verde","","green","#43A047","BEHR-deh"],["naranja","","orange","#FB8C00","nah-RAHN-hah"]]},{"n":"Más colores","en":"More colors","w":[["morado","","purple","#8E44AD","moh-RAH-doh"],["rosa","","pink","#F06292","ROH-sah"],["marrón","","brown","#8D5524","mah-RROHN"],["negro","","black","#222222","NEH-groh"],["blanco","","white","#FFFFFF","BLAHN-koh"],["gris","","gray","#9E9E9E","GREES"]]}]},{"n":"Números","en":"Numbers","i":"input-numbers","c":"#1C8C83","L":[{"n":"Del 0 al 10","en":"0–10","w":[["cero","","zero","n:0","SEH-roh"],["uno","","one","n:1","OO-noh"],["dos","","two","n:2","DOHS"],["tres","","three","n:3","TREHS"],["cuatro","","four","n:4","KWAH-troh"],["cinco","","five","n:5","SEEN-koh"],["seis","","six","n:6","SAYS"],["siete","","seven","n:7","SYEH-teh"],["ocho","","eight","n:8","OH-choh"],["nueve","","nine","n:9","NWEH-beh"],["diez","","ten","n:10","DYEHS"]]},{"n":"Del 11 al 20","en":"11–20","w":[["once","","eleven","n:11","OHN-seh"],["doce","","twelve","n:12","DOH-seh"],["trece","","thirteen","n:13","TREH-seh"],["catorce","","fourteen","n:14","kah-TOR-seh"],["quince","","fifteen","n:15","KEEN-seh"],["dieciséis","","sixteen","n:16","dyeh-see-SAYS"],["diecisiete","","seventeen","n:17","dyeh-see-SYEH-teh"],["dieciocho","","eighteen","n:18","dyeh-SYOH-choh"],["diecinueve","","nineteen","n:19","dyeh-see-NWEH-beh"],["veinte","","twenty","n:20","BAYN-teh"]]},{"n":"Decenas","en":"Tens to 100","w":[["diez","","ten","n:10","DYEHS"],["veinte","","twenty","n:20","BAYN-teh"],["treinta","","thirty","n:30","TRAYN-tah"],["cuarenta","","forty","n:40","kwah-REHN-tah"],["cincuenta","","fifty","n:50","seen-KWEHN-tah"],["sesenta","","sixty","n:60","seh-SEHN-tah"],["setenta","","seventy","n:70","seh-TEHN-tah"],["ochenta","","eighty","n:80","oh-CHEHN-tah"],["noventa","","ninety","n:90","noh-BEHN-tah"],["cien","","one hundred","n:100","SYEHN"]]}]},{"n":"Comida","en":"Food","i":"red-apple","c":"#D9453B","L":[{"n":"Para empezar","en":"Basics","w":[["manzana","la","apple","i:red-apple","mahn-SAH-nah"],["plátano","el","banana","i:banana","PLAH-tah-noh"],["agua","el","water","i:droplet","AH-gwah"],["leche","la","milk","i:glass-of-milk","LEH-cheh"],["pan","el","bread","i:bread","PAHN"],["huevo","el","egg","i:egg","WEH-boh"],["queso","el","cheese","i:cheese-wedge","KEH-soh"]]},{"n":"Frutas y dulces","en":"Fruit & treats","w":[["galleta","la","cookie","i:cookie","gah-YEH-tah"],["fresa","la","strawberry","i:strawberry","FREH-sah"],["uvas","las","grapes","i:grapes","OO-bahs"],["sandía","la","watermelon","i:watermelon","sahn-DEE-ah"],["zanahoria","la","carrot","i:carrot","sah-nah-OH-ryah"],["helado","el","ice cream","i:soft-ice-cream","eh-LAH-doh"]]},{"n":"A comer","en":"Mealtime","w":[["pollo","el","chicken","i:poultry-leg","POH-yoh"],["arroz","el","rice","i:cooked-rice","ah-RROHS"],["sopa","la","soup","i:pot-of-food","SOH-pah"],["jugo","el","juice","i:beverage-box","HOO-goh"],["tomate","el","tomato","i:tomato","toh-MAH-teh"],["pizza","la","pizza","i:pizza","PEET-sah"],["pastel","el","cake","i:birthday-cake","pahs-TEHL"]]}]},{"n":"Familia","en":"Family","i":"baby","c":"#2F80ED","L":[{"n":"Mi casa","en":"Close family","w":[["mamá","la","mom","i:woman","mah-MAH"],["papá","el","dad","i:man","pah-PAH"],["bebé","el","baby","i:baby","beh-BEH"],["hermano","el","brother","i:boy","ehr-MAH-noh"],["hermana","la","sister","i:girl","ehr-MAH-nah"],["familia","la","family","i:smiling-face-with-hearts","fah-MEE-lyah"]]},{"n":"Familia grande","en":"Big family","w":[["abuelo","el","grandpa","i:old-man","ah-BWEH-loh"],["abuela","la","grandma","i:old-woman","ah-BWEH-lah"],["tío","el","uncle","i:man-beard","TEE-oh"],["tía","la","aunt","i:woman-curly-hair","TEE-ah"],["primo","el","cousin","i:child","PREE-moh"],["amigo","el","friend","i:handshake","ah-MEE-goh"]]}]},{"n":"El cuerpo","en":"Body","i":"raised-hand","c":"#B04CA8","L":[{"n":"La cara y más","en":"Face & hands","w":[["ojo","el","eye","i:eye","OH-hoh"],["nariz","la","nose","i:nose","nah-REES"],["boca","la","mouth","i:mouth","BOH-kah"],["oreja","la","ear","i:ear","oh-REH-hah"],["mano","la","hand","i:raised-hand","MAH-noh"],["pie","el","foot","i:foot","PYEH"]]},{"n":"Todo el cuerpo","en":"Whole body","w":[["diente","el","tooth","i:tooth","DYEHN-teh"],["lengua","la","tongue","i:tongue","LEHN-gwah"],["dedo","el","finger","i:index-pointing-up","DEH-doh"],["brazo","el","arm","i:flexed-biceps","BRAH-soh"],["pierna","la","leg","i:leg","PYEHR-nah"],["corazón","el","heart","i:anatomical-heart","koh-rah-SOHN"]]}]},{"n":"Mi mundo","en":"My world","i":"house","c":"#3B9B4F","L":[{"n":"En casa","en":"At home","w":[["casa","la","house","i:house-with-garden","KAH-sah"],["cama","la","bed","i:bed","KAH-mah"],["silla","la","chair","i:chair","SEE-yah"],["puerta","la","door","i:door","PWEHR-tah"],["libro","el","book","i:closed-book","LEE-broh"],["pelota","la","ball","i:soccer-ball","peh-LOH-tah"],["juguete","el","toy","i:teddy-bear","hoo-GEH-teh"]]},{"n":"Afuera","en":"Outside","w":[["sol","el","sun","i:sun-with-face","SOHL"],["luna","la","moon","i:full-moon-face","LOO-nah"],["estrella","la","star","i:star","ehs-TREH-yah"],["árbol","el","tree","i:deciduous-tree","AHR-bohl"],["flor","la","flower","i:tulip","FLOR"],["nube","la","cloud","i:cloud","NOO-beh"],["lluvia","la","rain","i:cloud-with-rain","YOO-byah"]]},{"n":"¡Vámonos!","en":"Going places","w":[["carro","el","car","i:automobile","KAH-rroh"],["autobús","el","bus","i:bus","ow-toh-BOOS"],["tren","el","train","i:locomotive","TREHN"],["avión","el","airplane","i:airplane","ah-BYOHN"],["barco","el","boat","i:sailboat","BAR-koh"],["bicicleta","la","bike","i:bicycle","bee-see-KLEH-tah"]]}]},{"n":"Frases","en":"Sentences","i":"speech-balloon","c":"#0E8FA8","k":"s","L":[{"n":"Yo soy","en":"I am","w":[["Yo soy {N}.","","I am {N}.","a:",""],["Me llamo {N}.","","My name is {N}.","a:",""],["Soy un niño.","","I am a boy.","i:boy",""],["Soy una niña.","","I am a girl.","i:girl",""],["Estoy feliz.","","I am happy.","i:grinning-face",""],["Tengo cinco años.","","I am five years old.","n:5",""]]},{"n":"Palabras clave 1","en":"Sight words: I, you, he, she","k":"t","w":[["yo","","I","t:yo","YOH"],["tú","","you","t:tú","TOO"],["él","","he","t:él","EHL"],["ella","","she","t:ella","EH-yah"],["soy","","I am","t:soy","SOY"],["eres","","you are","t:eres","EH-rehs"],["es","","he / she is","t:es","EHS"]]},{"n":"Tú, él, ella","en":"You, he, she","w":[["Tú eres mi amigo.","","You are my friend.","i:handshake",""],["Él es mi papá.","","He is my dad.","i:man",""],["Ella es mi mamá.","","She is my mom.","i:woman",""],["Él es mi abuelo.","","He is my grandpa.","i:old-man",""],["Ella es mi abuela.","","She is my grandma.","i:old-woman",""],["Es un perro.","","It is a dog.","i:dog-face",""]]},{"n":"Palabras clave 2","en":"Sight words: we, they, and","k":"t","w":[["nosotros","","we","t:nosotros","noh-SOH-trohs"],["ellos","","they (boys)","t:ellos","EH-yohs"],["ellas","","they (girls)","t:ellas","EH-yahs"],["somos","","we are","t:somos","SOH-mohs"],["son","","they are","t:son","SOHN"],["y","","and","t:y","EE"]]},{"n":"Nosotros y ellos","en":"We and they","w":[["Nosotros somos amigos.","","We are friends.","i:handshake",""],["Somos una familia.","","We are a family.","i:smiling-face-with-hearts",""],["Ellos son mis abuelos.","","They are my grandparents.","i:old-man",""],["Ellas son mis hermanas.","","They are my sisters.","i:girl",""],["Ellos son gatos.","","They are cats.","i:cat-face",""],["Mamá y papá son grandes.","","Mom and Dad are big.","i:woman",""]]},{"n":"Palabras clave 3","en":"Sight words: a, the, my, I have","k":"t","w":[["un","","a (boy word)","t:un","OON"],["una","","a (girl word)","t:una","OO-nah"],["el","","the (boy word)","t:el","EHL"],["la","","the (girl word)","t:la","LAH"],["mi","","my","t:mi","MEE"],["tengo","","I have","t:tengo","TEHN-goh"],["quiero","","I want","t:quiero","KYEH-roh"],["me gusta","","I like","t:me gusta","meh GOOS-tah"]]},{"n":"Me gusta","en":"I like & I want","w":[["Tengo un perro.","","I have a dog.","i:dog-face",""],["Tengo un gato.","","I have a cat.","i:cat-face",""],["Me gusta la pizza.","","I like pizza.","i:pizza",""],["Me gusta el helado.","","I like ice cream.","i:soft-ice-cream",""],["Quiero agua.","","I want water.","i:droplet",""],["Quiero leche, por favor.","","I want milk, please.","i:glass-of-milk",""]]},{"n":"¿Cómo es?","en":"What is it like?","w":[["El sol es amarillo.","","The sun is yellow.","i:sun-with-face",""],["La manzana es roja.","","The apple is red.","i:red-apple",""],["La rana es verde.","","The frog is green.","i:frog",""],["El elefante es grande.","","The elephant is big.","i:elephant",""],["El ratón es pequeño.","","The mouse is small.","i:mouse-face",""],["La jirafa es alta.","","The giraffe is tall.","i:giraffe",""]]},{"n":"Mi día","en":"My day","w":[["Buenos días, mamá.","","Good morning, Mom.","i:sunrise",""],["Tengo hambre.","","I'm hungry.","i:pot-of-food",""],["Vamos en el carro.","","Let's go in the car.","i:automobile",""],["Papá lee un libro.","","Dad reads a book.","i:closed-book",""],["Me cepillo los dientes.","","I brush my teeth.","i:tooth",""],["Buenas noches, papá.","","Good night, Dad.","i:night-with-stars",""],["Te quiero mucho.","","I love you very much.","i:red-heart",""]]}]}];
+const CLIPS={"saludos":"saludos-ede423.mp3","hola":"hola-4d1863.mp3","adiós":"adios-863c92.mp3","gracias":"gracias-3e0a5f.mp3","por favor":"por-favor-a81fca.mp3","sí":"si-50e076.mp3","no":"no-7fa3b7.mp3","buenos días":"buenos-dias-8ad43e.mp3","buenas tardes":"buenas-tardes-37d4f8.mp3","buenas noches":"buenas-noches-b555da.mp3","te quiero":"te-quiero-16b1c0.mp3","bien":"bien-67d6c2.mp3","de nada":"de-nada-79d50d.mp3","animales":"animales-ac71e9.mp3","el perro":"el-perro-9598d7.mp3","el gato":"el-gato-9617d1.mp3","el pájaro":"el-pajaro-ed0e23.mp3","el pez":"el-pez-4f41c6.mp3","el conejo":"el-conejo-337861.mp3","el ratón":"el-raton-3a1c46.mp3","la tortuga":"la-tortuga-d66a7a.mp3","el caballo":"el-caballo-23b234.mp3","la vaca":"la-vaca-a59e6a.mp3","el cerdo":"el-cerdo-295163.mp3","la oveja":"la-oveja-c30e1d.mp3","la cabra":"la-cabra-41f420.mp3","la gallina":"la-gallina-fcbe92.mp3","el pato":"el-pato-0ce429.mp3","el león":"el-leon-8a64e9.mp3","el tigre":"el-tigre-bc7e66.mp3","el elefante":"el-elefante-ed2865.mp3","el mono":"el-mono-32de17.mp3","la jirafa":"la-jirafa-b12441.mp3","la cebra":"la-cebra-be28b6.mp3","el oso":"el-oso-2529b1.mp3","el delfín":"el-delfin-f7f37f.mp3","la ballena":"la-ballena-164404.mp3","el tiburón":"el-tiburon-e4277b.mp3","el pulpo":"el-pulpo-f346ec.mp3","el pingüino":"el-pinguino-bb25bc.mp3","el cocodrilo":"el-cocodrilo-79ed7b.mp3","la rana":"la-rana-c07f87.mp3","el lobo":"el-lobo-d83a02.mp3","el zorro":"el-zorro-e16fe6.mp3","el búho":"el-buho-0cfd42.mp3","la serpiente":"la-serpiente-f7eebf.mp3","la mariposa":"la-mariposa-a2e12c.mp3","la abeja":"la-abeja-077e16.mp3","la hormiga":"la-hormiga-269fc9.mp3","el caracol":"el-caracol-9be317.mp3","colores":"colores-c66d6d.mp3","rojo":"rojo-92c4cf.mp3","azul":"azul-3b24fa.mp3","amarillo":"amarillo-1ef467.mp3","verde":"verde-d4177d.mp3","naranja":"naranja-091808.mp3","morado":"morado-171638.mp3","rosa":"rosa-84109a.mp3","marrón":"marron-d9a850.mp3","negro":"negro-b59f8f.mp3","blanco":"blanco-640355.mp3","gris":"gris-4d9ad6.mp3","números":"numeros-d1f45a.mp3","cero":"cero-2a3345.mp3","uno":"uno-1eaa8b.mp3","dos":"dos-0196f6.mp3","tres":"tres-1798c7.mp3","cuatro":"cuatro-2b5562.mp3","cinco":"cinco-64e38e.mp3","seis":"seis-73e8e8.mp3","siete":"siete-f5368e.mp3","ocho":"ocho-c312b0.mp3","nueve":"nueve-002f93.mp3","diez":"diez-18fba3.mp3","once":"once-e2eff6.mp3","doce":"doce-614216.mp3","trece":"trece-12984f.mp3","catorce":"catorce-8f010a.mp3","quince":"quince-3b68a2.mp3","dieciséis":"dieciseis-78c61a.mp3","diecisiete":"diecisiete-ad3b56.mp3","dieciocho":"dieciocho-a49170.mp3","diecinueve":"diecinueve-895786.mp3","veinte":"veinte-5fe99f.mp3","treinta":"treinta-4916b1.mp3","cuarenta":"cuarenta-fcdd42.mp3","cincuenta":"cincuenta-ead461.mp3","sesenta":"sesenta-8b24b9.mp3","setenta":"setenta-bb697a.mp3","ochenta":"ochenta-52758e.mp3","noventa":"noventa-f0b197.mp3","cien":"cien-871b11.mp3","comida":"comida-c501b2.mp3","la manzana":"la-manzana-7a85c9.mp3","el plátano":"el-platano-005014.mp3","el agua":"el-agua-67c6a3.mp3","la leche":"la-leche-268372.mp3","el pan":"el-pan-8fed91.mp3","el huevo":"el-huevo-4b7d29.mp3","el queso":"el-queso-344aea.mp3","la galleta":"la-galleta-282f96.mp3","la fresa":"la-fresa-9d00fc.mp3","las uvas":"las-uvas-f54868.mp3","la sandía":"la-sandia-e6b0fe.mp3","la zanahoria":"la-zanahoria-27c840.mp3","el helado":"el-helado-3eb92e.mp3","el pollo":"el-pollo-49fb98.mp3","el arroz":"el-arroz-ee3081.mp3","la sopa":"la-sopa-140c97.mp3","el jugo":"el-jugo-f3ef63.mp3","el tomate":"el-tomate-2df364.mp3","la pizza":"la-pizza-cc5fab.mp3","el pastel":"el-pastel-5312ca.mp3","familia":"familia-2a9480.mp3","la mamá":"la-mama-681668.mp3","el papá":"el-papa-3565fe.mp3","el bebé":"el-bebe-c2258f.mp3","el hermano":"el-hermano-af7669.mp3","la hermana":"la-hermana-c1adab.mp3","la familia":"la-familia-69a1f8.mp3","el abuelo":"el-abuelo-cd4fcc.mp3","la abuela":"la-abuela-38875c.mp3","el tío":"el-tio-54ade5.mp3","la tía":"la-tia-f240f1.mp3","el primo":"el-primo-bef0b0.mp3","el amigo":"el-amigo-19aa2e.mp3","el cuerpo":"el-cuerpo-f7f3f7.mp3","el ojo":"el-ojo-24720e.mp3","la nariz":"la-nariz-75812a.mp3","la boca":"la-boca-aaff0a.mp3","la oreja":"la-oreja-1370c1.mp3","la mano":"la-mano-a20f8f.mp3","el pie":"el-pie-acd1d6.mp3","el diente":"el-diente-150c36.mp3","la lengua":"la-lengua-0089b6.mp3","el dedo":"el-dedo-69c99e.mp3","el brazo":"el-brazo-ea7017.mp3","la pierna":"la-pierna-ca0cd5.mp3","el corazón":"el-corazon-41bff1.mp3","mi mundo":"mi-mundo-78cc76.mp3","la casa":"la-casa-25f238.mp3","la cama":"la-cama-7730fb.mp3","la silla":"la-silla-8cb09e.mp3","la puerta":"la-puerta-d44e48.mp3","el libro":"el-libro-823714.mp3","la pelota":"la-pelota-93864f.mp3","el juguete":"el-juguete-e528a7.mp3","el sol":"el-sol-61aa2b.mp3","la luna":"la-luna-72e2d1.mp3","la estrella":"la-estrella-f07e8d.mp3","el árbol":"el-arbol-dfdcf2.mp3","la flor":"la-flor-eecd7e.mp3","la nube":"la-nube-b6928a.mp3","la lluvia":"la-lluvia-1a2c1b.mp3","el carro":"el-carro-b09578.mp3","el autobús":"el-autobus-1fe77d.mp3","el tren":"el-tren-978c46.mp3","el avión":"el-avion-4b7fa3.mp3","el barco":"el-barco-f379de.mp3","la bicicleta":"la-bicicleta-7110f5.mp3","frases":"frases-1657a6.mp3","yo soy":"yo-soy-3ec314.mp3","yo":"yo-6d0007.mp3","soy":"soy-91a5c1.mp3","me llamo":"me-llamo-58ec01.mp3","me":"me-ab86a1.mp3","llamo":"llamo-00d742.mp3","soy un niño":"soy-un-nino-0e1639.mp3","un":"un-067427.mp3","niño":"nino-66e2d6.mp3","soy una niña":"soy-una-nina-daf48a.mp3","una":"una-857585.mp3","niña":"nina-b4030b.mp3","estoy feliz":"estoy-feliz-a965a0.mp3","estoy":"estoy-5dc191.mp3","feliz":"feliz-afe0b0.mp3","tengo cinco años":"tengo-cinco-anos-d20770.mp3","tengo":"tengo-eb6f79.mp3","años":"anos-a58773.mp3","tú":"tu-1b40a5.mp3","él":"el-4fc48b.mp3","ella":"ella-ec5e1e.mp3","eres":"eres-7b1036.mp3","es":"es-12470f.mp3","tú eres mi amigo":"tu-eres-mi-amigo-d3b89a.mp3","mi":"mi-29bfe3.mp3","amigo":"amigo-d94729.mp3","él es mi papá":"el-es-mi-papa-060dae.mp3","papá":"papa-3f73aa.mp3","ella es mi mamá":"ella-es-mi-mama-e1b078.mp3","mamá":"mama-d3fe7a.mp3","él es mi abuelo":"el-es-mi-abuelo-fdd8fa.mp3","abuelo":"abuelo-4a7df6.mp3","ella es mi abuela":"ella-es-mi-abuela-48e295.mp3","abuela":"abuela-73fb6b.mp3","es un perro":"es-un-perro-bc928f.mp3","perro":"perro-d44b12.mp3","nosotros":"nosotros-2306b8.mp3","ellos":"ellos-be37ed.mp3","ellas":"ellas-184a6c.mp3","somos":"somos-b79714.mp3","son":"son-498d3c.mp3","y":"y-415290.mp3","nosotros somos amigos":"nosotros-somos-amigos-e3ab7e.mp3","amigos":"amigos-c2b592.mp3","somos una familia":"somos-una-familia-577235.mp3","ellos son mis abuelos":"ellos-son-mis-abuelos-a4ad48.mp3","mis":"mis-9bd3f3.mp3","abuelos":"abuelos-049870.mp3","ellas son mis hermanas":"ellas-son-mis-hermanas-d561bb.mp3","hermanas":"hermanas-def7bb.mp3","ellos son gatos":"ellos-son-gatos-63925b.mp3","gatos":"gatos-9da5f5.mp3","mamá y papá son grandes":"mama-y-papa-son-grandes-c594c5.mp3","grandes":"grandes-d0948e.mp3","el":"el-65c109.mp3","la":"la-c9089f.mp3","quiero":"quiero-91ef9e.mp3","me gusta":"me-gusta-4934d4.mp3","gusta":"gusta-098446.mp3","tengo un perro":"tengo-un-perro-be0458.mp3","tengo un gato":"tengo-un-gato-a27ec5.mp3","gato":"gato-70b783.mp3","me gusta la pizza":"me-gusta-la-pizza-be1da5.mp3","pizza":"pizza-7cf2db.mp3","me gusta el helado":"me-gusta-el-helado-cfac48.mp3","helado":"helado-fc40a8.mp3","quiero agua":"quiero-agua-7d23bf.mp3","agua":"agua-edbce9.mp3","quiero leche por favor":"quiero-leche-por-favor-daae6b.mp3","leche":"leche-d40a93.mp3","por":"por-7cf41f.mp3","favor":"favor-047fb9.mp3","el sol es amarillo":"el-sol-es-amarillo-bd9552.mp3","sol":"sol-12313a.mp3","la manzana es roja":"la-manzana-es-roja-08a091.mp3","manzana":"manzana-81b1c9.mp3","roja":"roja-88c9af.mp3","la rana es verde":"la-rana-es-verde-462aed.mp3","rana":"rana-90a1e9.mp3","el elefante es grande":"el-elefante-es-grande-83d2b4.mp3","elefante":"elefante-87bc60.mp3","grande":"grande-7a3e1c.mp3","el ratón es pequeño":"el-raton-es-pequeno-a4ff38.mp3","ratón":"raton-0ddbcc.mp3","pequeño":"pequeno-7cd991.mp3","la jirafa es alta":"la-jirafa-es-alta-0ba4d5.mp3","jirafa":"jirafa-3e2fa8.mp3","alta":"alta-a4dfe9.mp3","buenos días mamá":"buenos-dias-mama-aa0969.mp3","buenos":"buenos-725502.mp3","días":"dias-79b6ae.mp3","tengo hambre":"tengo-hambre-399c2e.mp3","hambre":"hambre-dfe94c.mp3","vamos en el carro":"vamos-en-el-carro-8cbb97.mp3","vamos":"vamos-8c0e0b.mp3","en":"en-9cfefe.mp3","carro":"carro-7e84b4.mp3","papá lee un libro":"papa-lee-un-libro-84ee95.mp3","lee":"lee-b0f8b4.mp3","libro":"libro-740f01.mp3","me cepillo los dientes":"me-cepillo-los-dientes-f9207d.mp3","cepillo":"cepillo-1e41c4.mp3","los":"los-e581ae.mp3","dientes":"dientes-7ab538.mp3","buenas noches papá":"buenas-noches-papa-ae0cf5.mp3","buenas":"buenas-2cd3d9.mp3","noches":"noches-0377b8.mp3","te quiero mucho":"te-quiero-mucho-3afcaa.mp3","te":"te-569ef7.mp3","mucho":"mucho-5198d7.mp3","a":"a-0cc175.mp3","be":"be-910955.mp3","ce":"ce-9b5394.mp3","cu":"cu-a4dbfd.mp3","de":"de-5f02f0.mp3","e":"e-e16717.mp3","efe":"efe-5ebf83.mp3","ele":"ele-7c4edb.mp3","eme":"eme-0d5175.mp3","ene":"ene-2e929b.mp3","equis":"equis-09c286.mp3","erre":"erre-7c6d64.mp3","ese":"ese-e00760.mp3","eñe":"ene-900b48.mp3","ge":"ge-0ba64a.mp3","hache":"hache-fd4b6f.mp3","i":"i-865c0c.mp3","jota":"jota-85ad90.mp3","ka":"ka-2c68e1.mp3","o":"o-d95679.mp3","pe":"pe-dd07de.mp3","u":"u-7b774e.mp3","uve":"uve-c9c6fd.mp3","uve doble":"uve-doble-9ed0eb.mp3","ye":"ye-00c66f.mp3","zeta":"zeta-e26026.mp3","muy bien":"muy-bien-8e30f7.mp3","excelente":"excelente-ac374a.mp3","fantástico":"fantastico-124721.mp3","genial":"genial-fde60e.mp3","bravo":"bravo-fd9ab4.mp3","increíble":"increible-a3dc37.mp3","lo hiciste":"lo-hiciste-e23403.mp3","nuevo nivel":"nuevo-nivel-a7088d.mp3","superestrella":"superestrella-c9bd52.mp3","buen intento":"buen-intento-9f773b.mp3","otra vez":"otra-vez-0e2157.mp3","hola vamos a aprender español":"hola-vamos-a-aprender-espanol-c38486.mp3","hola el perro el gato la manzana":"hola-el-perro-el-gato-la-manzana-a82088.mp3","quién juega":"quien-juega-a1afa6.mp3"};
 const AVATARS=["lion","fox","rabbit-face","penguin","owl","frog","tiger-face","monkey-face","bear","giraffe"];
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
@@ -392,6 +398,8 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const rnd=a=>a[Math.floor(Math.random()*a.length)];
 const full=w=>(w[1]?w[1]+" ":"")+w[0];
+const disp=s=>s.replace("{N}",K?K.name:"");
+const plain=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
 const praise=["¡Muy bien!","¡Excelente!","¡Fantástico!","¡Genial!","¡Bravo!","¡Increíble!"];
 const dayKey=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
 const ALL=TOPICS.flatMap(t=>t.L.flatMap(l=>l.w));
@@ -408,7 +416,8 @@ let K=null;
 const S={screen:"splash",t:0,l:0,i:0,reps:0,hist:{listen:[],spell:[],build:[]},recent:[],R:null,newAv:"lion",learnMode:null};
 
 const topic=()=>TOPICS[S.t];
-const isS=()=>topic().k==="s";
+const sight=()=>level().k==="t";
+const sent=()=>topic().k==="s"&&!sight();
 const openMax=t=>Math.min((K.open[t]||0),TOPICS[t].L.length-1);
 const level=()=>topic().L[S.l];
 const words=()=>level().w;
@@ -421,7 +430,7 @@ function setBox(w,v){
   while(m<TOPICS[t].L.length-1&&stats(t,m).need===0){m++;opened=m}
   if(opened>=0){K.open[t]=m;
     if(S.R)S.R.opened=opened;
-    else{toast(`🎉 ¡Nivel ${opened+1} desbloqueado! ${TOPICS[t].L[opened].en} is open.`,{label:`Go to Level ${opened+1}`,act:"lvlGo",k:opened});setTimeout(()=>speak("¡Nuevo nivel!"),1300)}}
+    else{toast(`🎉 ¡Nivel ${opened+1} desbloqueado! ${TOPICS[t].L[opened].en} is open.`,{label:`Go to Level ${opened+1}`,act:"lvlGo",k:opened});setTimeout(()=>say("¡Nuevo nivel!"),1300)}}
   saveDB();
 }
 function logAnswer(w,ok){
@@ -449,6 +458,8 @@ function pickWord(filter=()=>true){
 
 // ---- pictures ----
 function pic(p){
+  if(p.startsWith("t:"))return `<span class="tword">${esc(p.slice(2))}</span>`;
+  if(p.startsWith("a:"))return `<img class="pimg" src="img/${K.avatar}.webp" alt="" draggable="false">`;
   if(p.startsWith("i:"))return `<img class="pimg" src="img/${p.slice(2)}.webp" alt="" draggable="false" decoding="async">`;
   if(p.startsWith("#"))return `<span class="swatch" style="--c:${p}"></span>`;
   const n=+p.slice(2);let vis="";
@@ -456,7 +467,7 @@ function pic(p){
   else vis=`<span class="tens">${"<i></i>".repeat(n/10)}</span>`;
   return `<span class="numpic"><span class="numeral">${n}</span><span class="frames">${vis}</span></span>`;
 }
-function mini(w){return w[3].startsWith("i:")?`<img src="img/${w[3].slice(2)}.webp" alt="">`:w[3].startsWith("#")?`<span class="mini" style="background:${w[3]}"></span>`:`<span class="mini">${w[3].slice(2)}</span>`}
+function mini(w){if(w[3].startsWith("t:"))return `<span class="mini">Aa</span>`;if(w[3].startsWith("a:"))return `<img src="img/${K.avatar}.webp" alt="">`;return w[3].startsWith("i:")?`<img src="img/${w[3].slice(2)}.webp" alt="">`:w[3].startsWith("#")?`<span class="mini" style="background:${w[3]}"></span>`:`<span class="mini">${w[3].slice(2)}</span>`}
 function preload(){words().forEach(w=>{if(w[3].startsWith("i:")){const im=new Image();im.src=`img/${w[3].slice(2)}.webp`}})}
 
 // ---- voice (device text-to-speech, with a guard for Safari stalls) ----
@@ -476,27 +487,61 @@ function pickVoice(){
   voice=vs.find(v=>v.voiceURI===saved)||vs[0]||null;
   const sel=$("#vsel");
   sel.innerHTML=vs.map(v=>`<option value="${esc(v.voiceURI)}" ${v===voice?"selected":""}>${esc(v.name)} (${esc(v.lang)})</option>`).join("")||"<option>No Spanish voices found</option>";
-  sel.onchange=()=>{voice=vs.find(v=>v.voiceURI===sel.value)||voice;store.set("pal_voice",voice&&voice.voiceURI);speak("¡Hola! Vamos a aprender español.")};
+  sel.onchange=()=>{voice=vs.find(v=>v.voiceURI===sel.value)||voice;store.set("pal_voice",voice&&voice.voiceURI);speak(K?K.name:"Hola")};
   if(all.length){note.hidden=!!voice;note.textContent="No Spanish voice is installed. Add one in Settings → Accessibility → Spoken Content → Voices → Spanish."}
 }
 if("speechSynthesis" in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;setTimeout(pickVoice,800)}else pickVoice();
 let curU=null,speakTimer=null,watchTimer=null;
 function freshVoice(){if(!voice)return null;return speechSynthesis.getVoices().find(v=>v.voiceURI===voice.voiceURI)||voice}
-function speak(t,rate=.85,retry=0){
+function speak(t,rate=.85,retry=0,onDone){
   if(!("speechSynthesis" in window)||!t)return;
   const ss=speechSynthesis;clearTimeout(speakTimer);clearTimeout(watchTimer);
   const busy=ss.speaking||ss.pending;if(busy)ss.cancel();if(ss.paused)ss.resume();
   const go=()=>{
     const u=new SpeechSynthesisUtterance(t);const v=retry<2?freshVoice():null;
     u.lang=v?v.lang:(voice?voice.lang:"es-MX");if(v)u.voice=v;u.rate=rate;u.pitch=1.05;
-    let started=false;u.onstart=()=>{started=true};u.onend=u.onerror=()=>{if(curU===u)curU=null};
+    let started=false;u.onstart=()=>{started=true};u.onend=u.onerror=()=>{if(curU===u)curU=null;onDone&&onDone()};
     curU=u;ss.speak(u);
-    watchTimer=setTimeout(()=>{if(!started&&curU===u&&retry<2){ss.cancel();speak(t,rate,retry+1)}},retry?1200:900);
+    watchTimer=setTimeout(()=>{if(!started&&curU===u&&retry<2){ss.cancel();speak(t,rate,retry+1,onDone)}},retry?1200:900);
   };
   if(busy||retry)speakTimer=setTimeout(go,busy?150:250);else go();
 }
 document.addEventListener("visibilitychange",()=>{if(!document.hidden&&"speechSynthesis" in window){speechSynthesis.cancel();curU=null}});
-const sayW=(w,rate)=>speak(isS()?w[0]:full(w),rate??(isS()?.8:.85));
+// Recorded voice (Kokoro, voice "Dora") for every word, sentence, letter and praise phrase.
+// The device voice is only used for the child's name, or if a recording can't load.
+const ckey=s=>s.toLowerCase().replace(/[¡!¿?.,;:]/g," ").replace(/\s+/g," ").trim();
+const player=new Audio();player.preload="auto";
+let playTok=0;
+function stopAudio(){playTok++;try{player.pause()}catch(e){}if("speechSynthesis" in window)speechSynthesis.cancel()}
+function playClip(file,rate,tok){
+  return new Promise(res=>{
+    let done=false;const fin=ok=>{if(!done){done=true;clearTimeout(guard);player.onended=player.onerror=null;res(ok)}};
+    const guard=setTimeout(()=>fin(true),8000);
+    player.onended=()=>fin(true);player.onerror=()=>fin(false);
+    try{player.src="audio/"+file;player.playbackRate=rate;player.preservesPitch=true;player.webkitPreservesPitch=true;
+      const p=player.play();if(p&&p.catch)p.catch(()=>fin(false))}catch(e){fin(false)}
+  });
+}
+function ttsP(text,rate){
+  return new Promise(res=>{if(!text||!("speechSynthesis" in window))return res();
+    const g=setTimeout(res,text.length*110+1800);speak(text,rate<1?.55:.85,0,()=>{clearTimeout(g);res()})});
+}
+async function say(texts,rate=1){
+  const tok=++playTok;try{player.pause()}catch(e){}if("speechSynthesis" in window)speechSynthesis.cancel();
+  for(const text of [].concat(texts)){
+    const parts=String(text).split("{N}");
+    for(let i=0;i<parts.length;i++){
+      if(tok!==playTok)return;
+      const k=ckey(parts[i]);
+      if(k){const f=CLIPS[k];if(!(f&&await playClip(f,rate,tok))&&tok===playTok)await ttsP(parts[i],rate)}
+      if(i<parts.length-1&&tok===playTok&&K)await ttsP(K.name,rate);
+    }
+  }
+}
+const LETTERS={"a": "a", "b": "be", "c": "ce", "d": "de", "e": "e", "f": "efe", "g": "ge", "h": "hache", "i": "i", "j": "jota", "k": "ka", "l": "ele", "m": "eme", "n": "ene", "ñ": "eñe", "o": "o", "p": "pe", "q": "cu", "r": "erre", "s": "ese", "t": "te", "u": "u", "v": "uve", "w": "uve doble", "x": "equis", "y": "ye", "z": "zeta"};
+const sayLetter=l=>say(LETTERS[plain(l)]||LETTERS[l]||l);
+const sayTok=s=>say(s.replace(/[.,¡!¿?]/g,""));
+const sayW=(w,slow)=>say(full(w),slow?.7:1);
 
 // ---- little sounds and confetti ----
 let actx=null;
@@ -555,11 +600,11 @@ function renderTopic(){
     return `<button class="lvl ${locked?"locked":""}" data-act="lvl" data-k="${k}" aria-pressed="${k===S.l}">
       <b>${locked?"🔒":"⭐"} Nivel ${k+1}</b><span>${esc(L.en)}</span>
       ${locked?"":`<span class="bar" aria-label="${st.learned} of ${st.n} learned"><i style="width:${Math.round(st.learned/st.n*100)}%"></i></span>`}</button>`}).join("");
-  const acts=[["learn","📖","Aprender","Learn"],["listen","👂","Escuchar","Listen"],isS()?["build","🧩","Ordenar","Build it"]:["spell","🔤","Deletrear","Spell"]];
+  const acts=[["learn","📖","Aprender","Learn"],["listen","👂","Escuchar","Listen"],sent()?["build","🧩","Ordenar","Build it"]:["spell","🔤","Deletrear","Spell"]];
   $("#acts").innerHTML=acts.map(a=>{const b=K.best[`${S.t}|${S.l}|${a[0]}`]||0;
     return `<button class="act" data-act="act" data-k="${a[0]}"><span class="ai">${a[1]}</span><b>${a[2]}</b><span>${a[3]}</span>
       <span class="st" aria-label="Best ${b} of 3 stars">${a[0]==="learn"?"&nbsp;":"★".repeat(b)+"☆".repeat(3-b)}</span></button>`}).join("");
-  $("#preview").innerHTML=words().map(w=>{const b=box(w);return `<span>${esc(isS()?w[0]:w[0])}${b>=2?` <span class="k">★</span>`:""}</span>`}).join("");
+  $("#preview").innerHTML=words().map(w=>{const b=box(w);return `<span>${esc(disp(full(w)))}${b>=2?` <span class="k">★</span>`:""}</span>`}).join("");
 }
 function sayHTML(p){return esc(p).split(/([- ])/).map(s=>/^[A-Z]+$/.test(s)?`<b>${s}</b>`:s).join("")}
 function knowHTML(w){const b=box(w),n=b>=4?3:b>=2?2:b>=1?1:0;
@@ -567,14 +612,15 @@ function knowHTML(w){const b=box(w),n=b>=4?3:b>=2?2:b>=1?1:0;
 function renderLearn(){
   const ws=words();if(S.i>=ws.length)S.i=0;const w=ws[S.i];
   $("#lTitle").innerHTML=`Nivel ${S.l+1}<small>${esc(level().en)}</small>`;
-  const head=isS()
-    ?`<div class="word sent">${w[0].split(" ").map(x=>`<button class="wchip" data-act="sayWord" data-k="${esc(x)}">${esc(x)}</button>`).join("")}</div><div class="en s">${esc(w[2])}</div>`
+  const head=sent()
+    ?`<div class="word sent">${disp(w[0]).split(" ").map(x=>`<button class="wchip" data-act="sayWord" data-k="${esc(x)}">${esc(x)}</button>`).join("")}</div><div class="en s">${esc(disp(w[2]))}</div>`
+    :sight()?`<div class="say" aria-label="Pronunciation">${sayHTML(w[4])}</div><div class="en s">${esc(w[2])}</div>`
     :`<div class="word">${w[1]?`<span class="art">${w[1]}</span> `:""}${esc(w[0])}</div><div class="say" aria-label="Pronunciation">${sayHTML(w[4])}</div><div class="en">${esc(w[2])}</div>`;
   $("#learnBody").innerHTML=`<section class="card learn">
     <button class="pic" data-act="hear" aria-label="Hear it">${pic(w[3])}</button>
     ${head}${knowHTML(w)}
     <div class="row"><button class="btn hear grow" data-act="hear">🔊 Escuchar</button><button class="btn slow" data-act="slow">🐢 Slow</button></div>
-    <div class="repeat"><p>${isS()?"Tap a word to hear it. Then say the sentence together, 3 times!":"Now say it out loud together, 3 times!"}</p>
+    <div class="repeat"><p>${sent()?"Tap a word to hear it. Then say the sentence together, 3 times!":sight()?"Read it, then say it together, 3 times!":"Now say it out loud together, 3 times!"}</p>
       <div class="dots">${[0,1,2].map(d=>`<button class="dot ${d<S.reps?"on":""}" data-act="rep" aria-label="Said it ${d+1}">${d<S.reps?"✓":d+1}</button>`).join("")}</div></div>
     <div class="nav"><span class="swipe" aria-hidden="true">‹ swipe</span><span class="count">${S.i+1} / ${ws.length}</span><span class="swipe" aria-hidden="true">swipe ›</span></div>
   </section>`;
@@ -596,8 +642,10 @@ function nextQ(){
   else if(R.mode==="spell"){newSpell();renderSpell();setTimeout(()=>speakQ(),300)}
   else{newBuild();renderBuild();setTimeout(()=>speakQ(),300)}
 }
-function speakQ(rate){const q=S.R&&S.R.q;if(!q)return;sayW(q.w,rate)}
-function answered(ok){const R=S.R;R.res[R.i]=ok;if(ok)R.first++;R.q.done=true;setTimeout(()=>{if(S.R===R&&S.screen==="round"){R.i++;nextQ()}},1700)}
+function speakQ(slow){const q=S.R&&S.R.q;if(!q)return;return sayW(q.w,slow)}
+function answered(ok,talk){const R=S.R;R.res[R.i]=ok;if(ok)R.first++;R.q.done=true;
+  const go=()=>{if(S.R===R&&S.screen==="round"&&R.q&&R.q.done){R.i++;nextQ()}};
+  Promise.race([talk||Promise.resolve(),new Promise(r=>setTimeout(r,6000))]).then(()=>setTimeout(go,600))}
 function finish(){
   const R=S.R;renderProg();
   const miss=R.n-R.first,stars=miss<=1?3:miss<=3?2:1,key=`${S.t}|${S.l}|${R.mode}`;
@@ -617,11 +665,11 @@ function finish(){
       <button class="big-btn alt" data-act="go" data-k="topic">‹ Back to ${esc(topic().n)}</button>
     </div>`;
   show("result");sfx.win();confetti(140);setTimeout(()=>confetti(90),600);
-  setTimeout(()=>speak(`${stars===3?"¡Superestrella!":stars===2?"¡Muy bien!":"¡Buen intento!"}${opened>=0?" ¡Nuevo nivel!":""}`),400);
+  setTimeout(()=>say([stars===3?"¡Superestrella!":stars===2?"¡Muy bien!":"¡Buen intento!",...(opened>=0?["¡Nuevo nivel!"]:[])]),400);
 }
 function newQuiz(){
   const a=pickWord();const n=struggling("listen")?3:4;const others=[];
-  const add=x=>{if(x[0]!==a[0]&&x[3]!==a[3]&&!others.some(o=>o[0]===x[0]||o[3]===x[3]))others.push(x)};
+  const add=x=>{if(x[0]!==a[0]&&x[3]!==a[3]&&plain(x[0])!==plain(a[0])&&(x[3][0]==="t")===(a[3][0]==="t")&&!others.some(o=>o[0]===x[0]||o[3]===x[3]||plain(o[0])===plain(x[0])))others.push(x)};
   shuffle(words()).forEach(add);
   for(let k=0;k<topic().L.length&&others.length<n-1;k++)shuffle(topic().L[k].w).forEach(add);
   S.R.q={w:a,opts:shuffle([a,...others.slice(0,n-1)]),tries:0,done:false};
@@ -629,12 +677,13 @@ function newQuiz(){
 function renderListen(){
   const q=S.R.q;
   $("#roundBody").innerHTML=`<section class="card">
-    <p class="prompt">${isS()?"Listen to the sentence, then tap the picture":"Listen, then tap the right picture"}</p>
+    <p class="prompt">${sent()?"Listen to the sentence, then tap the picture":sight()?"Listen, then tap the word you hear":"Listen, then tap the right picture"}</p>
     <div class="row"><button class="btn hear grow" data-act="replay">🔊 Play it</button><button class="btn slow" data-act="replaySlow">🐢</button></div>
     <div class="choices ${q.opts.length===3?"three":""}">${q.opts.map((o,k)=>`<button class="choice" data-act="pick" data-k="${k}" aria-label="${esc(o[2])}">${pic(o[3])}</button>`).join("")}</div>
     <div class="msg" id="msg" aria-live="polite"></div></section>`;
 }
 const spellable=w=>/^[a-záéíóúüñ]+$/i.test(w[0]);
+const renderPuzzleFor=()=>S.R.q&&S.R.q.build?renderBuild():renderSpell();
 function newSpell(){
   const w=pickWord(spellable);
   if(!w){S.R.q=null;return}
@@ -644,7 +693,7 @@ function newSpell(){
   S.R.q={w,letters,order,picked:given?[order.find(x=>letters[x]===letters[0])]:[],given,done:false,miss:0,hinted:false,penalized:false};
 }
 function newBuild(){
-  const w=pickWord();const toks=w[0].split(" ");
+  const w=pickWord();const toks=disp(w[0]).split(" ");
   let order=shuffle(toks.map((t,k)=>k));if(toks.length>1&&order.every((v,k)=>v===k))order=order.reverse();
   const given=struggling("build")?1:0;
   S.R.q={w,letters:toks,order,picked:given?[order.find(x=>toks[x]===toks[0])]:[],given,done:false,miss:0,hinted:false,penalized:false,build:true};
@@ -665,7 +714,7 @@ function renderBuild(){
   const q=S.R.q;
   $("#roundBody").innerHTML=`<section class="card">
     <button class="pic spic" data-act="replay" aria-label="Hear the sentence">${pic(q.w[3])}</button>
-    <div class="en s">${esc(q.w[2])}</div>
+    <div class="en s">${esc(disp(q.w[2]))}</div>
     <div class="row"><button class="btn hear" data-act="replay">🔊 Hear it</button><button class="btn slow" data-act="replaySlow">🐢</button></div>
     <p class="prompt" style="font-size:1.05rem">Tap the words in order</p>
     <div class="slots ${q.done?"ok":""}" id="slots">${q.letters.map((l,k)=>`<div class="wslot ${k<q.picked.length?"fill":""}">${k<q.picked.length?esc(q.letters[q.picked[k]]):""}</div>`).join("")}</div>
@@ -675,14 +724,14 @@ function renderBuild(){
 }
 const renderPuzzle=()=>S.R.q.build?renderBuild():renderSpell();
 function correctPrefix(q){let n=0;while(n<q.picked.length&&q.letters[q.picked[n]]===q.letters[n])n++;return n}
-function addHint(q){const n=q.picked.length,need=q.letters[n];const idx=q.order.find(x=>!q.picked.includes(x)&&q.letters[x]===need);if(idx!=null){q.picked.push(idx);speak(need.replace(/[.,¡!¿?]/g,""),.8)}}
+function addHint(q){const n=q.picked.length,need=q.letters[n];const idx=q.order.find(x=>!q.picked.includes(x)&&q.letters[x]===need);if(idx!=null){q.picked.push(idx);q.build?sayTok(need):sayLetter(need)}}
 function finishPuzzle(){
   const q=S.R.q,mode=S.R.mode,clean=!q.hinted&&!q.miss;
   if(clean){star(q.build?2:2);result(mode,true);logAnswer(q.w,true);setBox(q.w,box(q.w)+1)}
   else{star(1);if(!q.penalized){result(mode,false);logAnswer(q.w,false)}}
-  sfx.ok();answered(clean);renderPuzzle();
-  const m=$("#msg");m.className="msg good";m.textContent=clean?rnd(praise):"¡Lo hiciste! You did it";
-  setTimeout(()=>sayW(q.w),300);
+  sfx.ok();const pr=clean?rnd(praise):"¡Lo hiciste!";
+  answered(clean,new Promise(r=>setTimeout(()=>say([full(q.w),pr]).then(r),250)));renderPuzzle();
+  const m=$("#msg");m.className="msg good";m.textContent=clean?pr:"¡Lo hiciste! You did it";
 }
 function star(n=1){K.stars+=n;saveDB();const p=$("#starPill");if(p){$("#starN").textContent=K.stars;p.classList.remove("bump");void p.offsetWidth;p.classList.add("bump")}}
 
@@ -715,7 +764,7 @@ function renderDash(){
     <div class="dash2">
       <div class="panel"><h3>Practice, last 14 days</h3>${svg}
         <div class="legend"><span><i style="background:var(--good)"></i>Right</span><span><i style="background:var(--line)"></i>Answers</span></div></div>
-      <div class="panel"><h3>Needs practice</h3>${weak.length?`<div class="weak">${weak.map(w=>`<button data-act="sayAny" data-k="${esc(w[0])}">${mini(w)}${esc(w[0])}</button>`).join("")}</div><p class="note">Tap one to hear it. The games bring these back more often.</p>`:`<p class="note">Nothing yet. Words that get missed in Listen or Spell show up here.</p>`}</div>
+      <div class="panel"><h3>Needs practice</h3>${weak.length?`<div class="weak">${weak.map(w=>`<button data-act="sayAny" data-k="${UNIQUE.indexOf(w)}">${mini(w)}${esc(disp(w[0]))}</button>`).join("")}</div><p class="note">Tap one to hear it. The games bring these back more often.</p>`:`<p class="note">Nothing yet. Words that get missed in Listen or Spell show up here.</p>`}</div>
     </div>
     <div class="panel"><h3>By topic</h3>${TOPICS.map((t,k)=>{const st=topicStats(k);return `<div class="trow"><img src="img/${t.i}.webp" alt=""><div><b>${esc(t.n)} <small>· Nivel ${openMax(k)+1} of ${t.L.length}</small></b><span class="bar"><i style="width:${Math.round(st.learned/st.n*100)}%"></i></span></div><span class="num">${st.learned}/${st.n}</span></div>`}).join("")}</div>
     <p class="note">⭐ ${K.stars} stars earned. Saved on this device only.</p>`;
@@ -742,17 +791,17 @@ document.addEventListener("click",e=>{
   const b=e.target.closest("[data-act]");if(!b)return;
   const act=b.dataset.act,k=b.dataset.k;
   switch(act){
-    case "pickKid":{const kid=DB.kids.find(x=>x.id===k);enterKid(kid);speak(`¡Hola, ${kid.name}!`);break}
+    case "pickKid":{const kid=DB.kids.find(x=>x.id===k);enterKid(kid);say(["¡Hola!{N}"]);break}
     case "newKid":S.newAv=rnd(AVATARS);renderSplash(true);show("splash");setTimeout(()=>{const i=$("#kidName");i&&i.focus()},50);break;
     case "cancelAdd":renderSplash();break;
     case "av":S.newAv=k;$$(".av").forEach(x=>x.setAttribute("aria-pressed",x.dataset.k===k));break;
-    case "addKid":{const name=($("#kidName").value||"").trim()||"Amigo";const kid=blankKid(name,S.newAv);DB.kids.push(kid);enterKid(kid);speak(`¡Hola, ${name}! Vamos a aprender español.`);break}
+    case "addKid":{const name=($("#kidName").value||"").trim()||"Amigo";const kid=blankKid(name,S.newAv);DB.kids.push(kid);enterKid(kid);say("¡Hola! Vamos a aprender español.");break}
     case "switchKid":renderSplash();show("splash");break;
     case "settings":renderSettings();show("settings");break;
     case "dash":renderDash();show("dash");break;
     case "go":if(k==="home"){S.R=null;renderHome();show("home")}else{S.R=null;renderTopic();show("topic")}break;
-    case "topic":openTopic(+k);speak(TOPICS[+k].n);break;
-    case "sayTopic":speak(topic().n);break;
+    case "topic":openTopic(+k);say(TOPICS[+k].n);break;
+    case "sayTopic":say(topic().n);break;
     case "lvl":{const n=+k;$("#toastBox").innerHTML="";
       if(n>openMax(S.t)){const st=stats(S.t,n-1);toast(`Learn ${st.need} more in Level ${n} to open this one.`,{label:"Open it now",act:"force",k:n});break}
       goLevel(n);break}
@@ -760,24 +809,24 @@ document.addEventListener("click",e=>{
     case "lvlGo":$("#toastBox").innerHTML="";goLevel(+k);break;
     case "act":if(k==="learn"){S.i=0;S.reps=0;renderLearn();show("learn");sayW(words()[0])}else startRound(k);break;
     case "hear":sayW(words()[S.i]);break;
-    case "slow":sayW(words()[S.i],.5);break;
-    case "sayWord":speak(k.replace(/[.,¡!¿?]/g,""),.75);break;
-    case "sayAny":speak(k);break;
-    case "rep":{const w=words()[S.i];sayW(w);S.reps=Math.min(3,S.reps+1);
-      if(S.reps===3){star();if(box(w)<1)setBox(w,1);const d=dayKey(new Date());K.log[d]=K.log[d]||{a:0,c:0,r:0};saveDB();setTimeout(()=>speak(rnd(praise)),isS()?1800:900)}
+    case "slow":sayW(words()[S.i],true);break;
+    case "sayWord":sayTok(k);break;
+    case "sayAny":say(full(UNIQUE[+k]));break;
+    case "rep":{const w=words()[S.i];S.reps=Math.min(3,S.reps+1);
+      if(S.reps===3){star();if(box(w)<1)setBox(w,1);const d=dayKey(new Date());K.log[d]=K.log[d]||{a:0,c:0,r:0};saveDB();say([full(w),rnd(praise)])}else sayW(w);
       renderLearn();break}
     case "replay":speakQ();break;
-    case "replaySlow":speakQ(.5);break;
+    case "replaySlow":speakQ(true);break;
     case "pick":{
       const q=S.R.q;if(q.done)return;const o=q.opts[+k],m=$("#msg");
       if(o===q.w){b.classList.add("right");m.className="msg good";m.textContent=rnd(praise);sfx.ok();
         if(q.tries===0){star();result("listen",true);logAnswer(q.w,true);setBox(q.w,box(q.w)+1)}
-        $$(".choice").forEach(c=>c.disabled=true);answered(q.tries===0);setTimeout(()=>sayW(q.w),250)}
+        $$(".choice").forEach(c=>c.disabled=true);answered(q.tries===0,new Promise(r=>setTimeout(()=>say([full(q.w),m.textContent]).then(r),250)))}
       else{sfx.no();if(q.tries===0){result("listen",false);logAnswer(q.w,false);setBox(q.w,box(q.w)-1)}
-        q.tries++;b.classList.add("wrong");b.disabled=true;m.className="msg bad";m.textContent="¡Otra vez! Try again";setTimeout(()=>sayW(q.w),500)}
+        q.tries++;b.classList.add("wrong");b.disabled=true;m.className="msg bad";m.textContent="¡Otra vez! Try again";say(["¡Otra vez!",full(q.w)])}
       break}
     case "tile":{
-      const q=S.R.q;if(q.done)return;q.picked.push(+k);speak(q.letters[+k].replace(/[.,¡!¿?]/g,""),.8);
+      const q=S.R.q;if(q.done)return;q.picked.push(+k);q.build?sayTok(q.letters[+k]):sayLetter(q.letters[+k]);
       if(q.picked.length===q.letters.length){
         if(q.picked.map(x=>q.letters[x]).join(" ")===q.letters.join(" "))finishPuzzle();
         else{q.miss++;sfx.no();
@@ -789,7 +838,8 @@ document.addEventListener("click",e=>{
       break}
     case "undo":{const q=S.R.q;if(q.picked.length>q.given)q.picked.pop();renderPuzzle();break}
     case "hint":{const q=S.R.q;q.hinted=true;q.picked=q.picked.slice(0,correctPrefix(q));addHint(q);if(q.picked.length===q.letters.length)finishPuzzle();else renderPuzzle();break}
-    case "vtest":speak("¡Hola! El perro, el gato, la manzana.");break;
+    case "vtest":say("¡Hola! El perro, el gato, la manzana.");break;
+    case "vtest2":speak(K?K.name:"Hola");break;
     case "delAsk":$("#del-"+k).innerHTML=`<div class="confirm">Remove ${esc(DB.kids.find(x=>x.id===k).name)} and their progress? <button class="big-btn small" data-act="del" data-k="${k}">Remove</button><button class="big-btn alt small" data-act="settings">Keep</button></div>`;break;
     case "del":DB.kids=DB.kids.filter(x=>x.id!==k);if(K.id===k){K=DB.kids[0];DB.cur=K.id}saveDB();renderSettings();break;
     case "resetAsk":$("#resetPanel").innerHTML=`<div class="confirm">Erase ${esc(K.name)}'s stars, levels and scores? <button class="big-btn small" data-act="reset">Yes, reset</button><button class="big-btn alt small" data-act="settings">Keep</button></div>`;break;

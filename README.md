@@ -2,7 +2,7 @@
 
 Spanish for little learners, Pre-K to 1st Grade, built for English-speaking children who are starting from zero. It works on iPhone and iPad, offline after the first visit, with no accounts, ads or tracking.
 
-It follows the same framework as [Learn & Play](https://github.com/sudiptoimpmail/kids-learn): parent-led setup, a grown-up PIN, grade-based levels and adaptive practice.
+It runs on **kids-core**, the same engine as [Learn & Play](https://github.com/sudiptoimpmail/kids-learn): saved data, grown-up PIN, voice, adaptive levels, content packs and offline use are shared code; Palabritas adds its own cards and games. US edition.
 
 ## For grown-ups
 
@@ -30,7 +30,7 @@ It follows the same framework as [Learn & Play](https://github.com/sudiptoimpmai
 
 **Progress (behind the PIN):** learning score, words learned and mastered, accuracy and a 7-day chart, day streak, a "Practice at home" list (tap to hear Spanish and English), and the level for each topic.
 
-**Settings (behind the PIN):** children, grade, boy/girl, age, the level for each topic (open one early), harder levels, voice on/off, change PIN, backup code and restore, reset, and **📋 Review all content**. That review page lists every card with its grade, English meaning and pronunciation, plus play buttons. It is also open without the PIN at `…/palabritas/#review`, read-only, for content review.
+**Settings (behind the PIN):** children, grade, boy/girl, age, the level for each topic (open one early), harder levels, voice on/off, change PIN, backup file and restore (backup codes from Palabritas 1 still restore), reset, and **📋 Review all content**. That review page lists every card with its grade, English meaning and pronunciation, plus play buttons. It is also open without the PIN at `…/palabritas/#review`, read-only, for content review.
 
 ## For children
 
@@ -80,7 +80,20 @@ GitHub Pages: **Settings → Pages → Deploy from a branch → `main` / root**.
 
 1. Edit `tools/content.py`.
 2. From `tools/`, run `python3 build_data.py`, then `python3 clips.py`, then `python3 record.py`. Recording needs `pip install kokoro-onnx soundfile`, ffmpeg, and `kokoro-v1.0.onnx` plus `voices-v1.0.bin` in `tools/kokoro/`.
-3. App code lives in `src/`, and `tools/assemble.py` combines it with the data.
+3. From the repo root, run `node tools/export.mjs`. It writes `data/palabritas.json` and the voice maps `audio/clips-es.json` and `audio/clips-en.json`.
+4. Bump `VERSION` in `sw.js` and run `node tests/smoke.cjs` (it checks every phrase has a recording).
+
+## How it is built
+
+| File | What it is |
+|---|---|
+| `app.config.json` | Name, saved-data key, voices, shared PIN, packs, **colours** (`theme.light` / `theme.dark`) |
+| `core/` | kids-core (a copy, don't edit here). Update with `node ../kids-core/tools/sync-core.mjs .` |
+| `data/palabritas.json` | Topics, levels, words and sentences, grades and their level-up rules |
+| `palabritas.js`, `palabritas.css` | Palabritas' own screens: learn cards, Listen, Spell, Build, Match, dashboard |
+| `sw.js` | Offline file list; the logic is `core/sw-core.js` |
+
+To change colours, edit `theme` in `app.config.json`; no code changes needed. Children's progress is saved under `palabritas.v1` on the device (Palabritas 1 data is moved over automatically).
 
 ## Credits
 

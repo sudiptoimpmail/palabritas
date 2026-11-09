@@ -1,0 +1,166 @@
+{
+  "schema": 1,
+  "core": "1.0.0",
+  "app": {
+    "id": "palabritas",
+    "name": "Palabritas",
+    "title": "Palabritas",
+    "version": "2.0.0"
+  },
+  "storage": {
+    "key": "palabritas.v1",
+    "qaKey": "palabritas.qa",
+    "backupName": "palabritas-backup",
+    "maxKids": 4,
+    "maxLevel": 12,
+    "deviceKeys": [
+      "voice",
+      "pinHash",
+      "offlineAudio",
+      "testMode"
+    ],
+    "profileDefaults": {
+      "avatar": "lion",
+      "grade": null,
+      "sex": "",
+      "age": 0,
+      "box": {},
+      "miss": {},
+      "cur": {},
+      "prog": {},
+      "log": {},
+      "showAll": false,
+      "last": null
+    }
+  },
+  "avatars": [
+    "lion",
+    "fox",
+    "rabbit-face",
+    "penguin",
+    "owl",
+    "frog",
+    "tiger-face",
+    "monkey-face",
+    "bear",
+    "giraffe",
+    "unicorn",
+    "panda"
+  ],
+  "voice": {
+    "lang": "es",
+    "clips": {
+      "es": "audio/clips-es.json",
+      "en": "audio/clips-en.json"
+    },
+    "dir": "audio/",
+    "keys": "unicode",
+    "deviceVoiceForNames": true,
+    "deviceLang": "en-US"
+  },
+  "pin": {
+    "salt": "lp:",
+    "rpName": "Palabritas",
+    "shareWith": [
+      "learnplay.v1"
+    ],
+    "sharedNote": "Type your 4-digit Learn & Play PIN.",
+    "kidNote": [
+      {
+        "text": "This part is for grown-ups.",
+        "lang": "en"
+      },
+      {
+        "text": "Tap the house to go back.",
+        "lang": "en"
+      }
+    ]
+  },
+  "packs": {
+    "db": "palabritas-content-packs",
+    "grades": [
+      "prek",
+      "k",
+      "g1"
+    ]
+  },
+  "offline": {
+    "serviceWorker": "sw.js",
+    "updateHost": "home"
+  },
+  "features": {},
+  "theme": {
+    "light": {
+      "bg": "#EEF5F1",
+      "paper": "#FFFFFF",
+      "card": "#FFFFFF",
+      "ink": "#173A40",
+      "soft": "#56716F",
+      "line": "#D3E3DC",
+      "marigold": "#F4A51C",
+      "rosa": "#E8507A",
+      "teal": "#1C8C83",
+      "theme": "#1C8C83",
+      "good": "#2E9E5B",
+      "bad": "#D9453B",
+      "tile": "#FFF3D6",
+      "tile-ink": "#5A3A00",
+      "halo": "#E4F1EC",
+      "bub1": "#FFE3EE",
+      "bub2": "#DDF1FF",
+      "bub3": "#E3F7E6",
+      "shade": "rgba(10,30,34,.55)",
+      "pin-dot": "#1C8C83",
+      "pin-key": "#EEF5F1",
+      "pin-back": "#EEF5F1",
+      "pin-back-ink": "#173A40",
+      "pin-back-shadow": "#D3E3DC",
+      "warn-bg": "#FFF3D6",
+      "warn-border": "#F4A51C",
+      "update-bg": "#E4F1EC",
+      "update-border": "#1C8C83",
+      "update-ink": "#173A40",
+      "theme-color": "#EEF5F1"
+    },
+    "dark": {
+      "bg": "#0F2225",
+      "paper": "#17323A",
+      "card": "#17323A",
+      "ink": "#EAF6F2",
+      "soft": "#A3BFBE",
+      "line": "#2A4D54",
+      "marigold": "#FFB938",
+      "rosa": "#FF6E95",
+      "teal": "#3CC0B4",
+      "theme": "#2A9D92",
+      "good": "#4CC67D",
+      "bad": "#FF6B5F",
+      "tile": "#3A2F14",
+      "tile-ink": "#FFE2A3",
+      "halo": "#1E3F46",
+      "bub1": "#2A2333",
+      "bub2": "#162F3E",
+      "bub3": "#183327",
+      "shade": "rgba(0,0,0,.6)",
+      "pin-dot": "#3CC0B4",
+      "pin-key": "#0F2225",
+      "pin-back": "#0F2225",
+      "pin-back-ink": "#EAF6F2",
+      "pin-back-shadow": "#2A4D54",
+      "warn-bg": "#3A2F14",
+      "warn-border": "#FFB938",
+      "update-bg": "#1E3F46",
+      "update-border": "#3CC0B4",
+      "update-ink": "#EAF6F2"
+    }
+  },
+  "data": {
+    "dir": "data/",
+    "namespaces": [
+      "palabritas"
+    ]
+  },
+  "scripts": [
+    "palabritas.js"
+  ]
+}

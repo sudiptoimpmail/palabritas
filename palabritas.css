@@ -1,20 +1,10 @@
 /* Layout: screen-based kids app on the Learn & Play pattern — splash → parent-led setup → home tiles → topic (levels + activities) → learn cards / rounds → result. Grown-up areas (settings, progress, child switching) sit behind the PIN. One column on phones, wider grids on iPad. */
+/* Palabritas styles. Colours come from app.config.json (theme), applied by kids-core. */
 :root{
-  --bg:#EEF5F1; --paper:#FFFFFF; --ink:#173A40; --soft:#56716F; --line:#D3E3DC;
-  --marigold:#F4A51C; --rosa:#E8507A; --teal:#1C8C83; --good:#2E9E5B; --bad:#D9453B;
-  --tile:#FFF3D6; --tile-ink:#5A3A00; --halo:#E4F1EC; --bub1:#FFE3EE; --bub2:#DDF1FF; --bub3:#E3F7E6; --shade:rgba(10,30,34,.55);
   --display:"Fredoka","Baloo 2","Arial Rounded MT Bold",system-ui,sans-serif;
   --body:"Nunito",ui-rounded,system-ui,-apple-system,sans-serif;
   --rs:1;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#0F2225; --paper:#17323A; --ink:#EAF6F2; --soft:#A3BFBE; --line:#2A4D54;
-  --marigold:#FFB938; --rosa:#FF6E95; --teal:#3CC0B4; --good:#4CC67D; --bad:#FF6B5F;
-  --tile:#3A2F14; --tile-ink:#FFE2A3; --halo:#1E3F46; --bub1:#2A2333; --bub2:#162F3E; --bub3:#183327; --shade:rgba(0,0,0,.6); color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#0F2225; --paper:#17323A; --ink:#EAF6F2; --soft:#A3BFBE; --line:#2A4D54;
-  --marigold:#FFB938; --rosa:#FF6E95; --teal:#3CC0B4; --good:#4CC67D; --bad:#FF6B5F;
-  --tile:#3A2F14; --tile-ink:#FFE2A3; --halo:#1E3F46; --bub1:#2A2333; --bub2:#162F3E; --bub3:#183327; --shade:rgba(0,0,0,.6); color-scheme:dark}
 html,body{height:100%}
 html{font-size:17px}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:1rem;-webkit-tap-highlight-color:transparent;overscroll-behavior:none;
@@ -23,7 +13,6 @@ body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:1re
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 button{font:inherit;color:inherit}
 button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid var(--rosa);outline-offset:3px}
-#confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:60}
 .screen{display:none;max-width:640px;margin:0 auto;padding-block:10px 40px;flex-direction:column;gap:14px}
 .screen.active{display:flex;animation:fadein .3s ease}
 @keyframes fadein{from{opacity:0;transform:translateY(6px)}}
@@ -80,16 +69,6 @@ h1,h2,h3{font-family:var(--display);font-weight:700;margin:0;text-wrap:balance}
 .who-kid.on{border-color:var(--rosa)}
 .who-kid.add{border:3px dashed var(--line);font-size:1rem}
 .who-kid.add .plus{font-size:2.6rem;line-height:72px}
-.pin-box{align-items:center;text-align:center;width:min(100%,380px)}
-.pin-back{align-self:flex-start;border:0;background:var(--bg);border-radius:14px;padding:10px 14px;font:900 1rem var(--body);cursor:pointer}
-.pin-dots{display:flex;gap:14px;justify-content:center}
-.pin-dots i{width:18px;height:18px;border-radius:50%;border:3px solid var(--line)}
-.pin-dots i.on{background:var(--teal);border-color:var(--teal)}
-.pin-pad{display:grid;grid-template-columns:repeat(3,72px);gap:10px;justify-content:center}
-.pin-pad button{height:64px;border-radius:18px;border:0;background:var(--bg);font:700 1.6rem var(--display);cursor:pointer;box-shadow:0 4px 0 var(--line)}
-.pin-pad button:active{transform:translateY(2px)}
-.shake{animation:shake .4s}
-.pin-forgot{background:var(--bg);border-radius:14px;padding:12px;font-weight:700;color:var(--soft);text-align:left;line-height:1.45}
 
 /* splash */
 #splash{min-height:100%;justify-content:center;align-items:center;text-align:center;gap:16px;padding-top:40px}
@@ -375,3 +354,11 @@ button.chip{cursor:pointer}
 }
 @media (hover:hover){.tile:hover,.act:hover,.lvl:hover,.choice:hover,.ltile:hover:not(:disabled),.banner:hover{filter:brightness(1.04)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* downloaded learning-pack questions (text answers) */
+.choices.text{grid-template-columns:1fr}
+.choices.text .choice{min-height:64px;padding:12px}
+.pack-question-image{max-width:min(100%,260px);border-radius:16px;align-self:center}
+/* the kids-core PIN sheet in Palabritas fonts */
+#pinSheet{font-family:var(--body)}
+#pinSheet h2{font-family:var(--display)}

@@ -1,99 +1,88 @@
 # Palabritas 🇪🇸
 
-A kid-friendly Spanish app for parents and children to learn together. It's one HTML page plus a folder of pictures, with no build step and no dependencies. It works great on iPhone and iPad.
+Spanish for little learners, Pre-K to 1st Grade, built for English-speaking children who are starting from zero. It works on iPhone and iPad, offline after the first visit, with no accounts, ads or tracking.
 
-## How it plays
+It follows the same framework as [Learn & Play](https://github.com/sudiptoimpmail/kids-learn): parent-led setup, a grown-up PIN, grade-based levels and adaptive practice.
 
-**¿Quién juega?** Each child taps their buddy picture to start, which also turns on the sound. On the **home** screen, colorful topic tiles show the child's level and progress. Tapping a topic opens its **levels** and three activities:
+## For grown-ups
 
-| Activity | What happens |
-|---|---|
-| 📖 **Aprender** (Learn) | Swipe through picture cards. Each card shows *el/la*, a pronunciation guide (kah-**BAH**-yoh), and normal and slow audio. Say it 3 times together for a star. On sentence cards, tap any word to hear it. |
-| 👂 **Escuchar** (Listen) | A 10-card round: hear a word or sentence and tap the matching picture. |
-| 🔤 **Deletrear** (Spell) / 🧩 **Ordenar** (Build) | An 8-card round of spelling words from letter tiles, or a 6-card round of putting sentence words in order. |
+**Setup (first run).** A grown-up enters the child's name, buddy picture, boy/girl (only used for *Soy un niño / Soy una niña*), age (only used for *Tengo cinco años*) and grade: **Pre-K**, **Kindergarten** or **1st Grade**. You can add up to 4 children. If Learn & Play is on the same device, its children are offered so you can copy their names and grades.
 
-Rounds end with a trophy and 1–3 stars, and celebrate any new level that opened.
+**Grown-up PIN.** Settings, Progress, switching children and adding children all ask for the 4-digit PIN. If Learn & Play is set up on this device, Palabritas uses the **same PIN**. Otherwise the first PIN is created after verifying the device owner with Face ID, Touch ID or the device passcode, like Learn & Play. Children cannot skip locked levels.
 
-## Content
+**What the grade changes.**
 
-There are 212 words, sight words and sentences in 9 topics and 31 levels:
+| | Pre-K | Kindergarten | 1st Grade |
+|---|---|---|---|
+| Levels shown | 19 (127 cards) | 34 (231) | 38 (260) |
+| Games | Learn, Listen, Match pictures | + Spell (≤5 letters, with guide letters), Build sentences (≤4 words) | + Spell (≤9 letters, one decoy letter), Build (≤7 words) |
+| Cards per round | 5 | 6 | 8 |
+| Listen choices | 3 | 3 (4 when doing well) | 4 |
+| Reading words | none | yes | yes |
+| Text size | largest | larger | normal |
 
-- **Saludos:** first words, then all day
+**Adaptive practice** (same rules as Learn & Play):
+- Each card moves from New to Seen, Learned and Mastered as the child answers. A miss moves it back a step.
+- Rounds favor weak cards, and about 1 in 4 cards reviews shaky cards from earlier levels. No card appears more than twice in a round.
+- **Next level** opens after two great rounds (80% or more right on the first try, 20% or fewer mistakes) or when 80% of the level is learned.
+- **Easier**: after several hard rounds, the app suggests practicing the level before. Listen drops to 3 choices, and Spell shows guide letters.
+- **Repaso**: when 3 or more words keep getting missed, home offers a 5-card practice round of just those.
+
+**Progress (behind the PIN):** learning score, words learned and mastered, accuracy and a 7-day chart, day streak, a "Practice at home" list (tap to hear Spanish and English), and the level for each topic.
+
+**Settings (behind the PIN):** children, grade, boy/girl, age, the level for each topic (open one early), harder levels, voice on/off, change PIN, backup code and restore, reset, and **📋 Review all content**. That review page lists every card with its grade, English meaning and pronunciation, plus play buttons. It is also open without the PIN at `…/palabritas/#review`, read-only, for content review.
+
+## For children
+
+Home has 10 topic tiles. Inside a topic: level chips and 3–4 games.
+
+- 📖 **Aprender (Learn).** Swipe through cards. Each card has a picture, Spanish with *el/la*, a pronunciation guide (kah-**BAH**-yoh), 🔊 normal, 🐢 slow, 💬 English meaning, and "say it 3 times".
+- 👂 **Escuchar (Listen).** Hear Spanish, tap the picture. Greetings and other abstract words show English under the picture. After a wrong tap, every choice shows its English. After two, the right answer pulses and the app says it in Spanish and English.
+- 🃏 **Parejas (Match).** A memory game. Pre-K matches two identical pictures, and readers match a picture to its word, or Spanish to English for reading words.
+- 🔤 **Deletrear (Spell)** and 🧩 **Ordenar (Build).** Tap the next letter or word. A wrong tile shakes right away and is not placed. 💡 Hint places the next piece.
+- Every finished round shows 1–3 stars and earns a sticker for the sticker book. Stars equal the cards answered right on the first try, so the home total always adds up.
+
+## Content: 260 cards in 10 topics, 38 levels
+
+- **Saludos:** first words, all day
 - **Animales:** pets, farm, wild, water, forest and bugs
-- **Colores:** bright colors, more colors
+- **Colores:** bright, more colors
 - **Números:** 0–10, 11–20, tens to 100
 - **Comida:** basics, fruit and treats, mealtime
 - **Familia:** close family, big family
 - **El cuerpo:** face and hands, whole body
-- **Mi mundo:** at home, outside, going places
-- **Frases**, which starts from zero and moves in small steps:
-  1. *Yo soy* (I am): *Yo soy {name}*, *Me llamo {name}*, *Soy una niña*, *Estoy feliz*
-  2. Sight words: *yo, tú, él, ella, soy, eres, es*
-  3. *Tú, él, ella* (you, he, she): *Él es mi papá*, *Ella es mi mamá*
-  4. Sight words: *nosotros, ellos, ellas, somos, son, y*
-  5. *Nosotros y ellos* (we, they): *Somos una familia*, *Ellos son gatos*
-  6. Sight words: *un, una, el, la, mi, tengo, quiero, me gusta*
-  7. *Me gusta* (I like and I want), then 8. *¿Cómo es?* (What is it like?), then 9. *Mi día* (My day)
+- **Mi mundo:** at home, outside, clothes, going places, at school
+- **¡Acción!** (verbs as commands): *corre, salta, baila, come, duerme, canta, lee, escribe…*
+- **Frases:** builds up in Spanish from zero:
+  1. *Hola, yo soy* (*¡Hola! Yo soy {name}*, *Me llamo…*, *Soy una niña*, *Tengo 5 años*, using the child's real details)
+  2. *¿Cómo estás?* (*Estoy bien*, *Tengo hambre / sed / sueño / frío*)
+  3. Reading words: *yo, tú, él, ella, soy, eres, es*
+  4. *Mi familia* (*Él es mi papá*, *Ella es mi mamá*)
+  5. Reading words: *nosotros, ellos, somos, son, y, mi, mis*
+  6. *Nosotros* (*Somos una familia*)
+  7. *Me gusta, quiero*
+  8. Reading words: *un, una, el, la, tengo, quiero, me gusta*
+  9. *¿Cómo es?* (colors and sizes)
+  10. *Mi día* (*Me levanto, Me lavo las manos, Voy a la escuela…*)
+  11. *Preguntas* (*¿Cómo te llamas? ¿Dónde está el gato?*)
 
-  The child's own name and buddy picture appear in the first sentences. In sight-word levels, Listen becomes a reading game (hear it, then tap the written word) and the third activity is Spell.
-
-## Adaptive practice
-
-- Each item moves from New to Seen, Learned, and Mastered as the child answers correctly. A miss moves it back a step.
-- Rounds pick weak items more often, and about 1 in 4 cards reviews shaky items from earlier levels.
-- The next level opens when 80% of the current level is learned. A grown-up can open a locked level early.
-- When a child is struggling, Listen shows 3 choices instead of 4, and Spell or Build gives a free first piece. After two misses, it adds a helper piece.
-
-## Progress dashboard
-
-Tap **Score** on the home screen to see:
-
-- A **learning score** from 0 to 100, which measures how well the child knows every item.
-- Items learned and mastered, accuracy over the last 7 days, and a day streak.
-- A 14-day practice chart.
-- A **Needs practice** list. Tap any item to hear it.
-- Progress for each topic.
-
-## Children and where progress is stored
-
-- Add as many children as you like. Each child has their own name, buddy picture, levels, stars, and dashboard.
-- **All progress is stored on the device**, in the browser's local storage. It is **not** stored in GitHub. GitHub only hosts the app's files, the same for everyone. Nothing is sent anywhere, and there are no accounts, ads, or tracking.
-- Progress belongs to that one device and browser. On iPhone, the Home Screen app and Safari keep separate copies. Clearing Safari's website data erases it.
-- To keep progress safe or move it to another device, use **⚙️ → Back up or move progress → Show backup code**, then **Restore from code** on the other device.
-
-## Run it
-
-Open `index.html` in any browser. Keep the `img` folder next to it.
-
-### On iPhone or iPad (via GitHub Pages)
-
-1. In this repo, go to **Settings → Pages**. Set the source to **Deploy from a branch**, then choose `main` and `/ (root)`.
-2. Open `https://<your-username>.github.io/palabritas/` in Safari.
-3. Tap **Share → Add to Home Screen**. It opens full screen, like an app.
-
-To share with other families, send them the same link. Each family's progress stays on their own devices.
+  Pre-K gets the spoken levels. Reading levels start in Kindergarten.
 
 ## Voice
 
-Every word, sentence, letter name and cheer is a recording of the natural Spanish voice **Dora** from the open-source [Kokoro](https://github.com/hexgrad/kokoro) text-to-speech model, stored in `audio/` (311 small MP3s, about 2 MB). It sounds the same on every device. 🐢 Slow plays the same recording at 70% speed.
+All Spanish is recorded with the open-source [Kokoro](https://github.com/hexgrad/kokoro) voice **Dora**. All English instructions and hints use **Heart**, the same voice as Learn & Play. There are 790 clips in `audio/`. Only the child's name is spoken by the device voice. Every new sound cancels the previous one, and leaving a screen stops all sound, so nothing plays late or overlaps.
 
-The device's own voice is used only to say the child's name, or if a recording can't load. You can pick that voice in ⚙️.
+## Run it
 
-To record new words, add them to `tools/words.py`, then run `tools/clips.py` and `tools/record.py`. You'll need `pip install kokoro-onnx soundfile`, ffmpeg, and the model files `kokoro-v1.0.onnx` and `voices-v1.0.bin` from the kokoro-onnx GitHub releases.
+GitHub Pages: **Settings → Pages → Deploy from a branch → `main` / root**. Then open `https://sudiptoimpmail.github.io/palabritas/` in Safari and tap **Share → Add to Home Screen**. The service worker (`sw.js`) caches the app, pictures and voice for offline use.
 
-## Add words
+## Edit content
 
-Content lives in the `TOPICS` list at the top of the `<script>`. Each topic has levels (`L`), and each item is one entry:
-
-```js
-["caballo", "el", "horse", "i:horse-face", "kah-BAH-yoh"]
-// word,    article, English, picture, pronunciation (CAPS = stressed syllable)
-```
-
-The picture can be `i:<name>` for `img/<name>.webp`, `#RRGGBB` for a color swatch, or `n:<number>` for a number. Sentence topics have `"k":"s"`.
+1. Edit `tools/content.py`.
+2. From `tools/`, run `python3 build_data.py`, then `python3 clips.py`, then `python3 record.py`. Recording needs `pip install kokoro-onnx soundfile`, ffmpeg, and `kokoro-v1.0.onnx` plus `voices-v1.0.bin` in `tools/kokoro/`.
+3. App code lives in `src/`, and `tools/assemble.py` combines it with the data.
 
 ## Credits
 
-The voice is Kokoro (Apache 2.0 License), voice `ef_dora`.
-
-The illustrations are from [Fluent Emoji](https://github.com/microsoft/fluentui-emoji) by Microsoft, used under the MIT License and resized to WebP.
+- 3D pictures: [Fluent Emoji](https://github.com/microsoft/fluentui-emoji) © Microsoft, MIT License.
+- Voices: Kokoro, Apache 2.0 License.

@@ -1,0 +1,5 @@
+_pack.bin
+__pycache__/
+tools/kokoro/
+tools/wav/
+tools/*.json

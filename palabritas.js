@@ -771,6 +771,8 @@ addEventListener('pointercancel', () => { if (drag && drag.c) { drag.c.style.tra
 addEventListener('keydown', (e) => { if (S.screen !== 'learn' || e.target.closest('select,input,textarea')) return; if (e.key === 'ArrowRight') { e.preventDefault(); swipeTo(1); } if (e.key === 'ArrowLeft') { e.preventDefault(); swipeTo(-1); } });
 
 /* ---------- start ---------- */
+// kids-core may apply a downloaded update by itself only while nothing is in progress
+function canAutoUpdate() { return (S.screen === 'splash' || S.screen === 'home') && !$('#sheetBox').innerHTML && (!$('#pinSheet') || $('#pinSheet').hidden); }
 $('#splashAv').src = `img/${K.avatar}.webp`;
 CoreOffline.watchVoiceDownload('offlineVoiceStatus', 'offlineVoiceBtn');
 CoreOffline.start();

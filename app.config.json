@@ -1,11 +1,11 @@
 {
   "schema": 1,
-  "core": "1.0.0",
+  "core": "1.1.0",
   "app": {
     "id": "palabritas",
     "name": "Palabritas",
     "title": "Palabritas",
-    "version": "2.1.0"
+    "version": "2.1.1"
   },
   "storage": {
     "key": "palabritas.v1",
@@ -86,7 +86,8 @@
   },
   "offline": {
     "serviceWorker": "sw.js",
-    "updateHost": "home"
+    "updateHost": "home",
+    "updateOnLaunch": true
   },
   "features": {},
   "theme": {

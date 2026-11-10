@@ -7,6 +7,9 @@
 import fs from 'node:fs';
 const T = (f) => JSON.parse(fs.readFileSync('tools/' + f, 'utf8'));
 const D = T('data3.json'), L = T('cliplist3.json'), ages = T('ages.json'), letters = T('letters.json');
+// Recorded voices: es-US-PalomaNeural (Spanish), en-US-JennyNeural (English), made with tools/make_voices.py.
+// A new set of recordings gets a new prefix so phones replace their saved copies.
+const CLIP_PREFIX = 'v2-';
 const clipKey = (t) => String(t).normalize('NFC').toLowerCase().replace(/[^\p{L}\p{N}' ]+/gu, ' ').replace(/\s+/g, ' ').trim();
 const slug = (s) => s.toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 for (const t of D.TOPICS) t.id = t.id || slug(t.en);
@@ -19,7 +22,7 @@ fs.mkdirSync('data', { recursive: true });
 fs.writeFileSync('data/palabritas.json', JSON.stringify({ schema: 1, namespace: 'palabritas', datasets: { TOPICS: D.TOPICS, GRADES: D.GRADES, AGES: D.AGES, AGE_WORDS: ages, LETTERS: letters } }));
 for (const lang of ['es', 'en']) {
   const m = {};
-  for (const v of Object.values(L[lang])) { const k = clipKey(v[0]); if (m[k] && m[k] !== v[2]) throw Error(`two clips for "${k}"`); m[k] = v[2]; }
+  for (const v of Object.values(L[lang])) { const k = clipKey(v[0]); if (m[k] && m[k] !== CLIP_PREFIX + v[2]) throw Error(`two clips for "${k}"`); m[k] = CLIP_PREFIX + v[2]; }
   fs.writeFileSync(`audio/clips-${lang}.json`, JSON.stringify(m));
   console.log(lang, Object.keys(m).length, 'clips');
 }

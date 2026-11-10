@@ -70,7 +70,7 @@ Home has 10 topic tiles. Inside a topic: level chips and 3–4 games.
 
 ## Voice
 
-All Spanish is recorded with the open-source [Kokoro](https://github.com/hexgrad/kokoro) voice **Dora**. All English instructions and hints use **Heart**, the same voice as Learn & Play. There are 790 clips in `audio/`. Only the child's name is spoken by the device voice. Every new sound cancels the previous one, and leaving a screen stops all sound, so nothing plays late or overlaps.
+All Spanish is recorded with Microsoft's natural US Spanish voice **Paloma** (es-US-PalomaNeural), and all English instructions and hints with **Jenny** (en-US-JennyNeural). `tools/make_voices.py` makes the clips. These voices come from the free service behind Microsoft Edge's read-aloud, which is fine for family use; before publishing the app commercially, re-make them through Azure AI Speech (same voices; its free tier covers this app). There are 790 clips in `audio/`. Only the child's name is spoken by the device voice. Every new sound cancels the previous one, and leaving a screen stops all sound, so nothing plays late or overlaps.
 
 ## Run it
 
@@ -98,4 +98,4 @@ To change colours, edit `theme` in `app.config.json`; no code changes needed. Ch
 ## Credits
 
 - 3D pictures: [Fluent Emoji](https://github.com/microsoft/fluentui-emoji) © Microsoft, MIT License.
-- Voices: Kokoro, Apache 2.0 License.
+- Voices: Microsoft neural voices Paloma and Jenny (see the note above on licensing).

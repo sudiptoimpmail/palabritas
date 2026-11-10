@@ -97,7 +97,7 @@ function weakItems() {
   return out.sort((a, b) => (K.miss[b.w.es] - box(b.w)) - (K.miss[a.w.es] - box(a.w)));
 }
 
-/* ---------- voice (kids-core say): Spanish voice Dora, English voice Heart ---------- */
+/* ---------- voice (kids-core say): Spanish voice Paloma (US Spanish), English voice Jenny ---------- */
 // parts: Spanish text, or "en:" + English text. {N} = the child's name (the only thing the device voice says).
 function talk(parts, opt = {}) {
   const out = [];
@@ -597,7 +597,7 @@ function renderSettings() {
       <label class="switch">Harder levels (show levels above this grade)<input type="checkbox" id="setAll" data-set="all" ${K.showAll ? 'checked' : ''}></label></div>
     <div class="panel"><h3>Voice</h3>
       <label class="switch">Voice<input type="checkbox" id="setVoice" data-set="voice" ${state.voice ? 'checked' : ''}></label>
-      <p class="note small">Spanish is spoken by the recorded voice Dora; instructions and hints in English by the voice Heart. They sound the same on every device. The device voice only says the child's name.</p>
+      <p class="note small">Spanish is spoken by the recorded voice Paloma (US Spanish); instructions and hints in English by the voice Jenny. They sound the same on every device. The device voice only says the child's name.</p>
       <div class="row" style="justify-content:flex-start"><button class="big-btn alt small" data-act="vtest">▶ Play a sample</button><button class="big-btn alt small" id="offlineVoiceBtn" data-act="offlineVoices">⬇ Save all voices for offline</button></div>
       <p class="note small" id="offlineVoiceStatus">${CoreOffline.available() ? 'Voices are saved as they are used. Save them all now to play anywhere without internet.' : 'Offline voices work in the installed app (Add to Home Screen).'}</p></div>
     <div class="panel"><h3>Learning packs</h3><p class="note small" id="contentPacksStatus">Checking…</p>
@@ -611,7 +611,7 @@ function renderSettings() {
     <div class="panel"><h3>Back up or move progress</h3><p class="note small">Progress is saved only on this device. Save a backup file (all children) to keep it safe or to open it on another iPhone or iPad.</p>
       <div class="row" style="justify-content:flex-start"><button class="big-btn alt small" data-act="backup">⬇ Save backup file</button><button class="big-btn alt small" data-act="restoreAsk">Restore from a backup</button></div><div id="backupBox"></div></div>
     <div class="panel" id="resetBox"><button class="link-btn" data-act="resetAsk">Reset ${esc(K.name)}’s stars and levels…</button></div>
-    <p class="note small">Palabritas ${esc(VERSION)} · kids-core ${esc(window.CORE_VERSION || '')} · 3D pictures: Fluent Emoji © Microsoft, MIT License · Voices: Kokoro, Apache 2.0 License · Everything is saved only on this device. No accounts, no ads, no tracking.</p>`;
+    <p class="note small">Palabritas ${esc(VERSION)} · kids-core ${esc(window.CORE_VERSION || '')} · 3D pictures: Fluent Emoji © Microsoft, MIT License · Voices: Microsoft neural voices Paloma and Jenny · Everything is saved only on this device. No accounts, no ads, no tracking.</p>`;
   renderPacks();
 }
 function renderPacks() {

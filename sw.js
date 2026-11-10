@@ -2,7 +2,7 @@
    Bump VERSION on every release: the new version downloads in the background and waits until a
    grown-up taps "A new version is ready" on the home screen. */
 const PREFIX = 'palabritas-';
-const VERSION = PREFIX + 'v2.0.0';
+const VERSION = PREFIX + 'v2.1.0';
 const AUDIO = PREFIX + 'audio';
 const AUDIO_MAPS = ['audio/clips-es.json', 'audio/clips-en.json'];
 const CORE_PHRASES = ['hola', "let's learn some spanish", 'listen then tap the picture', 'muy bien', 'otra vez', 'try again', 'this part is for grown ups', 'tap the house to go back'];

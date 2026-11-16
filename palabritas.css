@@ -362,3 +362,8 @@ button.chip{cursor:pointer}
 /* the kids-core PIN sheet in Palabritas fonts */
 #pinSheet{font-family:var(--body)}
 #pinSheet h2{font-family:var(--display)}
+
+/* the level's goal ("I can …"), as in US world-language Can-Do statements */
+.goal{margin:6px 16px 0;padding:10px 14px;border-radius:14px;background:var(--halo);color:var(--ink);font-weight:800;font-size:calc(15px * var(--rs));line-height:1.35}
+.goal:empty{display:none}
+.goal-s{display:block;color:var(--soft);font-weight:700;font-size:12px;margin:2px 0 4px}

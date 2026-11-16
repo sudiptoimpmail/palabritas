@@ -255,6 +255,7 @@ function renderTopic() {
     return `<button class="act" data-act="act" data-k="${a[0]}"><span class="ai">${a[1]}</span><b>${a[2]}</b><span>${a[3]}</span>
       <span class="st" aria-label="Best ${b} of 3 stars">${a[0] === 'learn' ? '' : '★'.repeat(b) + '☆'.repeat(3 - b)}</span></button>`;
   }).join('');
+  $('#goal').textContent = T.L[S.i].do ? '🎯 ' + T.L[S.i].do : '';
   $('#preview').innerHTML = itemsOf(T.L[S.i]).map((w) => `<span>${esc(nameIn(esFull(w)))}${learned(w) ? ' <span class="k">★</span>' : ''}</span>`).join('');
   ls.forEach((x) => itemsOf(x.L).forEach((w) => { const p = picOf(w); if (p.startsWith('i:')) { const im = new Image(); im.src = `img/${p.slice(2)}.webp`; } }));
 }
@@ -577,7 +578,7 @@ function renderDash() {
         <p class="note small">${wk.r} games finished this week · ⭐ ${K.stars} stars in all</p></div>
       <div class="panel"><h3>Practice at home</h3>${weak.length ? `<div class="weak">${weak.map((x) => `<button data-act="hearBoth" data-k="${x.t}|${x.i}|${esc(x.w.es)}">${mini(x.w)}<span>${esc(nameIn(esFull(x.w)))}<small>${esc(nameIn(enFull(x.w)))}</small></span></button>`).join('')}</div><p class="note small">Tap a word to hear it in Spanish and English. The games bring these back more often, and the home screen offers a short Repaso round.</p>` : '<p class="note">Nothing yet. Words missed in Listen, Spell or Build show up here.</p>'}</div>
     </div>
-    <div class="panel"><h3>By topic</h3>${TOPICS.map((T, t) => { const it = gradeItems(t), l = it.filter(learned).length; return `<div class="trow"><img src="img/${T.i}.webp" alt=""><div><b>${esc(T.n)} <small>· Nivel ${lvNum(t, topLv(t))} of ${levelsFor(t).length}</small></b><span class="bar"><i style="width:${it.length ? Math.round(l / it.length * 100) : 0}%"></i></span></div><span class="num">${l}/${it.length}</span></div>`; }).join('')}</div>
+    <div class="panel"><h3>By topic</h3>${TOPICS.map((T, t) => { const it = gradeItems(t), l = it.filter(learned).length; return `<div class="trow"><img src="img/${T.i}.webp" alt=""><div><b>${esc(T.n)} <small>· Nivel ${lvNum(t, topLv(t))} of ${levelsFor(t).length}</small></b><small class="goal-s">🎯 ${esc(T.L[topLv(t)].do || '')}</small><span class="bar"><i style="width:${it.length ? Math.round(l / it.length * 100) : 0}%"></i></span></div><span class="num">${l}/${it.length}</span></div>`; }).join('')}</div>
     <p class="note small">Saved only on this device. “Learned” means answered right at least twice more than missed. A level opens after two great rounds or when 80% of its words are learned.</p>`;
 }
 
@@ -664,7 +665,7 @@ function restoreOldCode(code) {
 /* ---------- content review (read-only) ---------- */
 function renderReview() {
   $('#revBody').innerHTML = '<p class="note small">Every card in Palabritas with its grade, English meaning and pronunciation. Read-only. Tap ▶ to hear the recordings. {N} is the child\'s name; {A} is their age.</p>' +
-    TOPICS.map((T) => `<div class="panel rv-topic"><h3>${esc(T.n)} <small class="note small">· ${esc(T.en)}</small></h3>${T.L.map((L, i) => `<div class="rv-level"><h4>Level ${i + 1} · ${esc(L.n)}<small>${esc(L.en)} · ${GRADES[L.g].label}+ · ${L.k === 's' ? 'sentences' : L.k === 't' ? 'reading words' : 'words'}</small></h4>
+    TOPICS.map((T) => `<div class="panel rv-topic"><h3>${esc(T.n)} <small class="note small">· ${esc(T.en)}</small></h3>${T.L.map((L, i) => `<div class="rv-level"><h4>Level ${i + 1} · ${esc(L.n)}<small>${esc(L.en)} · ${GRADES[L.g].label}+ · ${L.k === 's' ? 'sentences' : L.k === 't' ? 'reading words' : 'words'}</small></h4>${L.do ? `<p class="note small">🎯 ${esc(L.do)}</p>` : ''}
     ${L.w.map((w) => `<div class="rv-row">${w.p.startsWith('i:') ? `<img src="img/${w.p.slice(2)}.webp" alt="">` : `<span class="mini" ${w.p.startsWith('#') ? `style="background:${w.p}"` : ''}>${w.p.startsWith('n:') ? esc(w.p.slice(2)) : w.p === 'a:' ? '🙂' : w.p.startsWith('t:') ? 'Aa' : ''}</span>`}
       <div><b>${esc((w.a ? w.a + ' ' : '') + w.es)}</b><small>${esc(w.en)}${w.pr ? ` · ${esc(w.pr)}` : ''}${w.sx ? ` · ${w.sx === 'm' ? 'boys' : 'girls'} only` : ''}</small></div>
       <div class="row"><button class="btn slow" data-act="rvEs" data-k="${esc((w.a ? w.a + ' ' : '') + w.es)}">▶ es</button><button class="btn slow" data-act="rvEn" data-k="${esc(w.en)}">▶ en</button></div></div>`).join('')}</div>`).join('')}</div>`).join('');

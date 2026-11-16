@@ -25,7 +25,7 @@ for t in C.TOPICS:
                 if w[3] in("m","f"): d["sx"]=w[3]
                 if w[3]=="age": d["age"]=1
                 items.append(d)
-        T["L"].append({"n":L["n"],"en":L["en"],"g":L["g"],"k":L["k"],"w":items})
+        T["L"].append({"n":L["n"],"en":L["en"],"g":L["g"],"k":L["k"],"do":L["do"],"w":items})
     out.append(T)
 for a in C.AVATARS: need.add(a)
 miss=[n for n in need if n.lower() not in byname]

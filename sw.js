@@ -1,8 +1,8 @@
 /* Palabritas offline support. The logic is kids-core's (core/sw-core.js); this file lists what to keep.
-   Bump VERSION on every release: the new version downloads in the background and waits until a
-   grown-up taps "A new version is ready" on the home screen. */
+   Made by tools/write-sw.mjs; bump the version on every release. A new version downloads in the background and is
+   applied the next time the app opens (kids-core offline.updateOnLaunch). */
 const PREFIX = 'palabritas-';
-const VERSION = PREFIX + 'v2.1.1';
+const VERSION = PREFIX + 'v2.1.2';
 const AUDIO = PREFIX + 'audio';
 const AUDIO_MAPS = ['audio/clips-es.json', 'audio/clips-en.json'];
 const CORE_PHRASES = ['hola', "let's learn some spanish", 'listen then tap the picture', 'muy bien', 'otra vez', 'try again', 'this part is for grown ups', 'tap the house to go back'];
@@ -27,13 +27,17 @@ const FILES = [
   "core/content-packs.js",
   "core/core.css",
   "core/feature-flags.js",
+  "core/hooks.js",
+  "core/native.js",
   "core/offline.js",
   "core/parent-gate.js",
   "core/progression.js",
+  "core/question-bank.js",
   "core/sounds.js",
   "core/storage.js",
   "core/sw-core.js",
   "core/theme-early.js",
+  "core/themes/mascots.json",
   "core/util.js",
   "core/voice.js",
   "img/airplane.webp",

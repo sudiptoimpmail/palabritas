@@ -20,13 +20,15 @@ const tIndex = (id) => TOPICS.findIndex((T) => T.id === id);
 function fromOld(old) {
   const root = { schema: 3, savedAt: Date.now(), active: 'p1', order: [], device: { voice: !(old.device && old.device.voice === false) }, profiles: {} };
   if (old.device && old.device.pinHash) root.device.pinHash = old.device.pinHash;
-  const byId = (o) => { const out = {}; for (const [k, v] of Object.entries(o || {})) { const t = +k; if (TOPICS[t]) out[tid(t)] = v; } return out; };
+  // Palabritas 1.x saved topics by position; these were its topics in order (new topics can go anywhere now)
+  const OLD = ['hello', 'animals', 'colors', 'numbers', 'food', 'family', 'body', 'my-world', 'actions', 'sentences'];
+  const byId = (o) => { const out = {}; for (const [k, v] of Object.entries(o || {})) if (OLD[+k]) out[OLD[+k]] = v; return out; };
   old.kids.slice(0, MAX_KIDS).forEach((k, n) => {
     const id = 'p' + (n + 1);
     const levels = {}; for (const [t, v] of Object.entries(byId(k.lvl))) if (Number.isInteger(v)) levels[t] = v + 1;
-    const best = {}; for (const [key, v] of Object.entries(k.best || {})) { const [t, i, m] = key.split('|'); if (TOPICS[+t]) best[`${tid(+t)}|${i}|${m}`] = v; }
+    const best = {}; for (const [key, v] of Object.entries(k.best || {})) { const [t, i, m] = key.split('|'); if (OLD[+t]) best[`${OLD[+t]}|${i}|${m}`] = v; }
     root.profiles[id] = { name: k.name || '', avatar: k.avatar, grade: k.grade || null, sex: k.sex || '', age: k.age || 0, stars: k.stars || 0, stickers: k.stickers || [],
-      box: k.box || {}, miss: k.miss || {}, levels, cur: byId(k.cur), prog: {}, best, log: k.log || {}, showAll: !!k.showAll, last: k.last != null && TOPICS[k.last] ? tid(k.last) : null };
+      box: k.box || {}, miss: k.miss || {}, levels, cur: byId(k.cur), prog: {}, best, log: k.log || {}, showAll: !!k.showAll, last: k.last != null && OLD[k.last] ? OLD[k.last] : null };
     root.order.push(id); if (k.id === old.cur) root.active = id;
   });
   return root;

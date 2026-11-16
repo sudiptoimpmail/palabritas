@@ -35,7 +35,7 @@ async function page(browser, opts = {}, seed) {
       await pg.fill('#welName', 'Ana'); await pg.click('[data-w="sex"][data-k="f"]'); await pg.selectOption('#welAge', '5');
       await pg.click('[data-w="grade"][data-k="k"]'); await pg.click('[data-w="go"]');
       ok(await pg.isVisible('#home.active'), `${label}: home after setup`);
-      ok((await pg.$$('#grid .tile')).length === 10, `${label}: 10 topic tiles`);
+      ok((await pg.$$('#grid .tile')).length === await pg.evaluate(() => TOPICS.length), `${label}: a tile for every topic`);
       const saved = await pg.evaluate(() => JSON.parse(localStorage.getItem('palabritas.v1')));
       ok(saved && saved.schema === 3 && saved.profiles.p1.name === 'Ana' && saved.profiles.p1.grade === 'k', `${label}: saved in the kids-core format`);
       const overflow = await pg.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1);

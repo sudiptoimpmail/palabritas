@@ -25,6 +25,13 @@ TOPICS = [
      ("te quiero","","I love you","Red heart","teh KYEH-roh","x"),
      ("bien","","good","OK hand","BYEHN","x"),
      ("de nada","","you're welcome","Hugging face","deh NAH-dah","x")]),
+   dict(n="Mañana y noche", en="Morning & night", g="prek", k="w", w=[
+     ("hasta mañana","","see you tomorrow","Crescent moon","AHS-tah mah-NYAH-nah","x"),
+     ("dulces sueños","","sweet dreams","Zzz","DOOL-sehs SWEH-nyohs","x"),
+     ("hasta luego","","see you later","Raised back of hand","AHS-tah LWEH-goh","x"),
+     ("lo siento","","I'm sorry","Pensive face","loh SYEHN-toh","x"),
+     ("salud","","bless you","Sneezing face","sah-LOOD","x"),
+     ("feliz cumpleaños","","happy birthday","Party popper","feh-LEES koom-pleh-AH-nyohs","x")]),
  ]),
  dict(n="Animales", en="Animals", icon="Dog face", c="#E07B00", L=[
    dict(n="Mascotas", en="Pets", g="prek", k="w", w=[
@@ -68,6 +75,23 @@ TOPICS = [
      ("abeja","la","bee","Honeybee","ah-BEH-hah",""),
      ("hormiga","la","ant","Ant","or-MEE-gah",""),
      ("caracol","el","snail","Snail","kah-rah-KOHL","")]),
+   dict(n="Favoritos", en="Favorites", g="prek", k="w", w=[
+     ("pollito","el","chick","Baby chick","poh-YEE-toh",""),
+     ("gallo","el","rooster","Rooster","GAH-yoh",""),
+     ("burro","el","donkey","Donkey","BOO-rroh",""),
+     ("mariquita","la","ladybug","Lady beetle","mah-ree-KEE-tah",""),
+     ("ardilla","la","squirrel","Chipmunk","ar-DEE-yah",""),
+     ("loro","el","parrot","Parrot","LOH-roh",""),
+     ("dinosaurio","el","dinosaur","T-Rex","dee-noh-SOW-ryoh","")]),
+ ]),
+ dict(n="Formas", en="Shapes", icon="Large orange diamond", c="#E0A100", L=[
+   dict(n="Formas", en="Shapes", g="prek", k="w", w=[
+     ("círculo","el","circle","Red circle","SEER-koo-loh",""),
+     ("cuadrado","el","square","Blue square","kwah-DRAH-doh",""),
+     ("triángulo","el","triangle","Red triangle","tree-AHN-goo-loh",""),
+     ("rombo","el","diamond","Large orange diamond","ROHM-boh",""),
+     ("estrella","la","star","Star","ehs-TREH-yah",""),
+     ("corazón","el","heart","Red heart","koh-rah-SOHN","")]),
  ]),
  dict(n="Colores", en="Colors", icon="Artist palette", c="#7C5CD6", L=[
    dict(n="Colores vivos", en="Bright colors", g="prek", k="w", w=[
@@ -127,6 +151,21 @@ TOPICS = [
      ("pizza","la","pizza","Pizza","PEET-sah",""),
      ("pastel","el","cake","Birthday cake","pahs-TEHL",""),
      ("sándwich","el","sandwich","Sandwich","SAHND-weech","")]),
+   dict(n="Más frutas", en="More fruit", g="prek", k="w", w=[
+     ("pera","la","pear","Pear","PEH-rah",""),
+     ("piña","la","pineapple","Pineapple","PEE-nyah",""),
+     ("limón","el","lemon","Lemon","lee-MOHN",""),
+     ("cerezas","las","cherries","Cherries","seh-REH-sahs",""),
+     ("mango","el","mango","Mango","MAHN-goh",""),
+     ("durazno","el","peach","Peach","doo-RAHS-noh","")]),
+   dict(n="Verduras y tacos", en="Veggies & tacos", g="k", k="w", w=[
+     ("maíz","el","corn","Ear of corn","mah-EES",""),
+     ("brócoli","el","broccoli","Broccoli","BROH-koh-lee",""),
+     ("papa","la","potato","Potato","PAH-pah",""),
+     ("aguacate","el","avocado","Avocado","ah-gwah-KAH-teh",""),
+     ("frijoles","los","beans","Beans","free-HOH-lehs",""),
+     ("tortilla","la","tortilla","Flatbread","tor-TEE-yah",""),
+     ("taco","el","taco","Taco","TAH-koh","")]),
  ]),
  dict(n="Familia", en="Family", icon="Baby", c="#2F80ED", L=[
    dict(n="Mi casa", en="Close family", g="prek", k="w", w=[
@@ -201,6 +240,58 @@ TOPICS = [
      ("mochila","la","backpack","Backpack","moh-CHEE-lah",""),
      ("tijeras","las","scissors","Scissors","tee-HEH-rahs",""),
      ("cuaderno","el","notebook","Notebook","kwah-DEHR-noh","")]),
+   dict(n="Cocina y baño", en="Kitchen & bath", g="prek", k="w", w=[
+     ("ventana","la","window","Window","behn-TAH-nah",""),
+     ("cuchara","la","spoon","Spoon","koo-CHAH-rah",""),
+     ("taza","la","cup","Hot beverage","TAH-sah",""),
+     ("tina","la","bathtub","Bathtub","TEE-nah",""),
+     ("jabón","el","soap","Soap","hah-BOHN",""),
+     ("reloj","el","clock","Alarm clock","reh-LOH","")]),
+   dict(n="¡Sirenas y ruedas!", en="Big wheels", g="k", k="w", w=[
+     ("camión de bomberos","el","fire truck","Fire engine","kah-MYOHN deh bohm-BEH-rohs",""),
+     ("ambulancia","la","ambulance","Ambulance","ahm-boo-LAHN-syah",""),
+     ("patrulla","la","police car","Police car","pah-TROO-yah",""),
+     ("tractor","el","tractor","Tractor","trahk-TOR",""),
+     ("helicóptero","el","helicopter","Helicopter","eh-lee-KOHP-teh-roh",""),
+     ("cohete","el","rocket","Rocket","koh-EH-teh",""),
+     ("moto","la","motorcycle","Motorcycle","MOH-toh","")]),
+ ]),
+ dict(n="El tiempo", en="Weather", icon="Sun behind cloud", c="#2D9CDB", L=[
+   dict(n="¿Qué tiempo hace?", en="What's the weather?", g="prek", k="w", w=[
+     ("hace sol","","it's sunny","Sun","AH-seh SOHL","x"),
+     ("llueve","","it's raining","Umbrella","YWEH-beh","x"),
+     ("nieva","","it's snowing","Snowflake","NYEH-bah","x"),
+     ("hace viento","","it's windy","Wind face","AH-seh BYEHN-toh","x"),
+     ("hace frío","","it's cold","Cold face","AH-seh FREE-oh","x"),
+     ("hace calor","","it's hot","Hot face","AH-seh kah-LOR","x")]),
+   dict(n="Cielo y estaciones", en="Sky & seasons", g="k", k="w", w=[
+     ("arcoíris","el","rainbow","Rainbow","ar-koh-EE-rees",""),
+     ("tormenta","la","storm","Cloud with lightning","tor-MEHN-tah",""),
+     ("muñeco de nieve","el","snowman","Snowman","moo-NYEH-koh deh NYEH-beh",""),
+     ("hoja","la","leaf","Fallen leaf","OH-hah",""),
+     ("nube","la","cloud","Sun behind cloud","NOO-beh",""),
+     ("paraguas","el","umbrella","Closed umbrella","pah-RAH-gwahs","")]),
+   dict(n="Los días", en="Days of the week", g="g1", k="t", w=[
+     ("lunes","Monday","LOO-nehs"),("martes","Tuesday","MAR-tehs"),("miércoles","Wednesday","MYEHR-koh-lehs"),
+     ("jueves","Thursday","HWEH-behs"),("viernes","Friday","BYEHR-nehs"),("sábado","Saturday","SAH-bah-doh"),("domingo","Sunday","doh-MEEN-goh")]),
+ ]),
+ dict(n="Fiesta y juegos", en="Party & play", icon="Balloon", c="#D6336C", L=[
+   dict(n="¡Fiesta!", en="Party time", g="prek", k="w", w=[
+     ("globo","el","balloon","Balloon","GLOH-boh",""),
+     ("regalo","el","present","Wrapped gift","reh-GAH-loh",""),
+     ("pastel","el","cake","Birthday cake","pahs-TEHL",""),
+     ("vela","la","candle","Candle","BEH-lah",""),
+     ("música","la","music","Musical notes","MOO-see-kah",""),
+     ("tambor","el","drum","Drum","tahm-BOR",""),
+     ("guitarra","la","guitar","Guitar","gee-TAH-rrah","")]),
+   dict(n="A jugar", en="Playtime", g="prek", k="w", w=[
+     ("robot","el","robot","Robot","roh-BOHT",""),
+     ("osito","el","teddy bear","Teddy bear","oh-SEE-toh",""),
+     ("rompecabezas","el","puzzle","Puzzle piece","rohm-peh-kah-BEH-sahs",""),
+     ("dado","el","die","Game die","DAH-doh",""),
+     ("papalote","el","kite","Kite","pah-pah-LOH-teh",""),
+     ("burbujas","las","bubbles","Bubbles","boor-BOO-hahs",""),
+     ("videojuego","el","video game","Video game","bee-deh-oh-HWEH-goh","")]),
  ]),
  dict(n="¡Acción!", en="Actions", icon="Person running", c="#0E8FA8", L=[
    dict(n="¡A moverse!", en="Let's move", g="prek", k="w", w=[
@@ -296,6 +387,35 @@ TOPICS = [
      ("¿Qué es esto?","What is this?","Red question mark",""),
      ("¿Dónde está el gato?","Where is the cat?","Magnifying glass tilted left",""),
      ("¿Quieres jugar?","Do you want to play?","Basketball","")]),
+   dict(n="Buenos días, buenas noches", en="Morning & bedtime", g="prek", k="s", w=[
+     ("¡Buenos días, mamá!","Good morning, Mom!","Sunrise",""),
+     ("¡Buenos días, papá!","Good morning, Dad!","Sun with face",""),
+     ("¡Buenas noches, mamá!","Good night, Mom!","Night with stars",""),
+     ("¡Buenas noches, papá!","Good night, Dad!","Crescent moon",""),
+     ("Dulces sueños.","Sweet dreams.","Zzz",""),
+     ("Hasta mañana.","See you tomorrow.","Sunrise over mountains",""),
+     ("Te quiero mucho.","I love you very much.","Red heart","")]),
+   dict(n="Por favor y gracias", en="Good manners", g="prek", k="s", w=[
+     ("Gracias, mamá.","Thank you, Mom.","Folded hands",""),
+     ("Agua, por favor.","Water, please.","Droplet",""),
+     ("Lo siento.","I'm sorry.","Pensive face",""),
+     ("¿Me ayudas?","Can you help me?","Raising hands",""),
+     ("¡Feliz cumpleaños!","Happy birthday!","Party popper",""),
+     ("De nada.","You're welcome.","Hugging face","")]),
+   dict(n="¡Vamos a jugar!", en="Let's play together", g="k", k="s", w=[
+     ("¡Vamos a jugar!","Let's play!","Soccer ball",""),
+     ("Me toca a mí.","It's my turn.","Index pointing up",""),
+     ("Te toca a ti.","It's your turn.","Backhand index pointing right",""),
+     ("¡Gané!","I won!","Trophy",""),
+     ("¡Qué divertido!","What fun!","Grinning squinting face",""),
+     ("Juega conmigo.","Play with me.","Kite","")]),
+   dict(n="Mi color favorito", en="My favorite things", g="k", k="s", w=[
+     ("Mi color favorito es el azul.","My favorite color is blue.","Blue heart",""),
+     ("Mi color favorito es el rosa.","My favorite color is pink.","Pink heart",""),
+     ("Mi animal favorito es el perro.","My favorite animal is the dog.","Dog face",""),
+     ("Mi fruta favorita es la fresa.","My favorite fruit is the strawberry.","Strawberry",""),
+     ("Hoy hace sol.","Today it is sunny.","Sun",""),
+     ("Hoy llueve.","Today it is raining.","Umbrella","")]),
  ]),
 ]
 AGES = [3,4,5,6,7,8]
